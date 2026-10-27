@@ -1,0 +1,59 @@
+=== EXECUCAO NATIVA NO KIT STM32MP1-DK1 (COM3 @ 115200 8N1) ===
+Sistema: Buildroot STM32MP1 IMBEL FMCE LINUX DISTRO (Linux STM32MP1 6.9.8 armv7l)
+Binario: /root/teste_sensor (ELF 32-bit LSB pie executable, ARM, EABI5, 29928 bytes)
+
+# /root/teste_sensor 6
+Sensor SW-420 | canal 6 | /sys/bus/iio/devices/iio:device0
+
+--- Leituras instantaneas ---
+Leitura 1 | bruto = 11601 | tensao = 0.492923 V | vibracao = nao
+Leitura 2 | bruto = 7295 | tensao = 0.345434 V | vibracao = nao
+Leitura 3 | bruto = 4762 | tensao = 0.233193 V | vibracao = nao
+Leitura 4 | bruto = 3487 | tensao = 0.161941 V | vibracao = nao
+Leitura 5 | bruto = 2522 | tensao = 0.110932 V | vibracao = nao
+Leitura 6 | bruto = 2059 | tensao = 0.0821286 V | vibracao = nao
+Leitura 7 | bruto = 1519 | tensao = 0.09794 V | vibracao = nao
+Leitura 8 | bruto = 1513 | tensao = 0.0724102 V | vibracao = nao
+Leitura 9 | bruto = 1535 | tensao = 0.075079 V | vibracao = nao
+Leitura 10 | bruto = 1351 | tensao = 0.0879698 V | vibracao = nao
+Leitura 11 | bruto = 1246 | tensao = 0.079057 V | vibracao = nao
+Leitura 12 | bruto = 1406 | tensao = 0.0751797 V | vibracao = nao
+Leitura 13 | bruto = 1509 | tensao = 0.0722591 V | vibracao = nao
+Leitura 14 | bruto = 1408 | tensao = 0.0518654 V | vibracao = nao
+Leitura 15 | bruto = 1459 | tensao = 0.0717556 V | vibracao = nao
+Leitura 16 | bruto = 1499 | tensao = 0.0930053 V | vibracao = nao
+Leitura 17 | bruto = 1704 | tensao = 0.0722591 V | vibracao = nao
+Leitura 18 | bruto = 1779 | tensao = 0.0936095 V | vibracao = nao
+Leitura 19 | bruto = 1720 | tensao = 0.0887755 V | vibracao = nao
+Leitura 20 | bruto = 1691 | tensao = 0.0812222 V | vibracao = nao
+
+--- Intensidade em janela de 20 amostras (100 ms) ---
+Intensidade de vibracao: 0 %
+
+# /root/teste_sensor 13
+Sensor SW-420 | canal 13 | /sys/bus/iio/devices/iio:device0
+
+--- Leituras instantaneas ---
+Leitura 1 | bruto = 2633 | tensao = 0.128505 V | vibracao = nao
+Leitura 2 | bruto = 2591 | tensao = 0.127045 V | vibracao = nao
+Leitura 3 | bruto = 2643 | tensao = 0.127851 V | vibracao = nao
+Leitura 4 | bruto = 2737 | tensao = 0.13626 V | vibracao = nao
+Leitura 5 | bruto = 2779 | tensao = 0.138224 V | vibracao = nao
+Leitura 6 | bruto = 2707 | tensao = 0.134649 V | vibracao = nao
+Leitura 7 | bruto = 2632 | tensao = 0.138576 V | vibracao = nao
+Leitura 8 | bruto = 2679 | tensao = 0.131778 V | vibracao = nao
+Leitura 9 | bruto = 2681 | tensao = 0.134699 V | vibracao = nao
+Leitura 10 | bruto = 2705 | tensao = 0.136159 V | vibracao = nao
+Leitura 11 | bruto = 2591 | tensao = 0.137317 V | vibracao = nao
+Leitura 12 | bruto = 2715 | tensao = 0.129009 V | vibracao = nao
+Leitura 13 | bruto = 2535 | tensao = 0.128002 V | vibracao = nao
+Leitura 14 | bruto = 2723 | tensao = 0.128959 V | vibracao = nao
+Leitura 15 | bruto = 2715 | tensao = 0.137317 V | vibracao = nao
+Leitura 16 | bruto = 2535 | tensao = 0.129261 V | vibracao = nao
+Leitura 17 | bruto = 2760 | tensao = 0.134397 V | vibracao = nao
+Leitura 18 | bruto = 2690 | tensao = 0.128908 V | vibracao = nao
+Leitura 19 | bruto = 2478 | tensao = 0.131728 V | vibracao = nao
+Leitura 20 | bruto = 2700 | tensao = 0.139533 V | vibracao = nao
+
+--- Intensidade em janela de 20 amostras (100 ms) ---
+Intensidade de vibracao: 0 %

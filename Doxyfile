@@ -1,0 +1,15 @@
+# Doxyfile minimo - Sensor de Vibracao SW-420
+# Gerar a documentacao: doxygen Doxyfile  (saida em doc/html/index.html)
+PROJECT_NAME           = "Sensor de Vibracao SW-420"
+PROJECT_BRIEF          = "Projeto de Programacao Aplicada 2026 - Monitoramento Inteligente de Carga"
+OUTPUT_LANGUAGE        = Brazilian
+OUTPUT_DIRECTORY       = doc
+INPUT                  = src
+INPUT_ENCODING         = UTF-8
+FILE_PATTERNS          = *.h *.cpp
+EXTRACT_ALL            = NO
+EXTRACT_PRIVATE        = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_NO_PARAMDOC       = YES
+GENERATE_LATEX         = NO
+HAVE_DOT               = NO

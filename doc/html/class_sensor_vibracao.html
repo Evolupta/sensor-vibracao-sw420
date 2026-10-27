@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sensor de Vibracao SW-420: Referência da Classe SensorVibracao</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+  $(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Sensor de Vibracao SW-420
+   </div>
+   <div id="projectbrief">Projeto de Programacao Aplicada 2026 - Monitoramento Inteligente de Carga</div>
+  </td>
+    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
+          <input type="text" id="MSearchField" value="" placeholder="Busca" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('class_sensor_vibracao.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrado</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Membros Públicos</a> &#124;
+<a href="#pri-methods">Membros privados</a> &#124;
+<a href="#pri-attribs">Atributos Privados</a> &#124;
+<a href="class_sensor_vibracao-members.html">Lista de todos os Membros</a>  </div>
+  <div class="headertitle"><div class="title">Referência da Classe SensorVibracao</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Lê e interpreta o módulo sensor de vibração digital SW-420.  
+ <a href="#details">Mais...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_sensor_vibracao_8h_source.html">SensorVibracao.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Membros Públicos</h2></td></tr>
+<tr class="memitem:a0ccd3fb8a7c764f359e047888f050870" id="r_a0ccd3fb8a7c764f359e047888f050870"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ccd3fb8a7c764f359e047888f050870">SensorVibracao</a> (int <a class="el" href="#a63cd04310b97cce00aaad2b4fcdf8f3c">canal</a>=0, const std::string &amp;<a class="el" href="#ad0a4c7dcbc5b4e42fcb3d140787491f4">caminhoIio</a>=&quot;/sys/bus/iio/devices/iio:device0&quot;, bool <a class="el" href="#a1a5b3d2abb45fe1633c368f49fd81041">nivelAtivoAlto</a>=true, double <a class="el" href="#aeb53a772a17ca7d9be5575ca26bc2a30">tensaoReferencia</a>=3.3, int <a class="el" href="#acff32b9ce4be757832515435bf022924">valorMaximoAdc</a>=4095)</td></tr>
+<tr class="memdesc:a0ccd3fb8a7c764f359e047888f050870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrói o sensor.  <br /></td></tr>
+<tr class="separator:a0ccd3fb8a7c764f359e047888f050870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29a4992f13c1df8ced9dbda7b340ba37" id="r_a29a4992f13c1df8ced9dbda7b340ba37"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29a4992f13c1df8ced9dbda7b340ba37">lerBruto</a> (int &amp;valorBruto) const</td></tr>
+<tr class="memdesc:a29a4992f13c1df8ced9dbda7b340ba37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê o valor bruto do ADC.  <br /></td></tr>
+<tr class="separator:a29a4992f13c1df8ced9dbda7b340ba37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e9b02fd2cb36d72595fa81d9917b532" id="r_a1e9b02fd2cb36d72595fa81d9917b532"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e9b02fd2cb36d72595fa81d9917b532">lerTensao</a> (double &amp;tensao) const</td></tr>
+<tr class="memdesc:a1e9b02fd2cb36d72595fa81d9917b532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê o sinal do sensor já convertido para volts.  <br /></td></tr>
+<tr class="separator:a1e9b02fd2cb36d72595fa81d9917b532"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd801dbf7802887ca4da215b51f550cd" id="r_acd801dbf7802887ca4da215b51f550cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd801dbf7802887ca4da215b51f550cd">vibracaoDetectada</a> (bool &amp;detectada) const</td></tr>
+<tr class="memdesc:acd801dbf7802887ca4da215b51f550cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verifica se, neste instante, o sensor indica vibração.  <br /></td></tr>
+<tr class="separator:acd801dbf7802887ca4da215b51f550cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30a1eb1bac6621dced0cb73efa3fdcc1" id="r_a30a1eb1bac6621dced0cb73efa3fdcc1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30a1eb1bac6621dced0cb73efa3fdcc1">medirIntensidade</a> (int amostras, int intervaloMs, double &amp;intensidade) const</td></tr>
+<tr class="memdesc:a30a1eb1bac6621dced0cb73efa3fdcc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mede a intensidade de vibração em uma janela de várias amostras.  <br /></td></tr>
+<tr class="separator:a30a1eb1bac6621dced0cb73efa3fdcc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0957597ebdad0b3dfb833d22c9642640" id="r_a0957597ebdad0b3dfb833d22c9642640"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0957597ebdad0b3dfb833d22c9642640">getCanal</a> () const</td></tr>
+<tr class="memdesc:a0957597ebdad0b3dfb833d22c9642640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informa o canal ADC usado.  <br /></td></tr>
+<tr class="separator:a0957597ebdad0b3dfb833d22c9642640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67f9a9a69bc164557dbdaab18532f1a3" id="r_a67f9a9a69bc164557dbdaab18532f1a3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67f9a9a69bc164557dbdaab18532f1a3">getCaminhoIio</a> () const</td></tr>
+<tr class="memdesc:a67f9a9a69bc164557dbdaab18532f1a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Informa o diretório IIO usado.  <br /></td></tr>
+<tr class="separator:a67f9a9a69bc164557dbdaab18532f1a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Membros privados</h2></td></tr>
+<tr class="memitem:ab32886efc15df80b01493f57609c4272" id="r_ab32886efc15df80b01493f57609c4272"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab32886efc15df80b01493f57609c4272">caminhoDoCanal</a> () const</td></tr>
+<tr class="memdesc:ab32886efc15df80b01493f57609c4272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monta o caminho completo do arquivo bruto do canal.  <br /></td></tr>
+<tr class="separator:ab32886efc15df80b01493f57609c4272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos Privados</h2></td></tr>
+<tr class="memitem:a63cd04310b97cce00aaad2b4fcdf8f3c" id="r_a63cd04310b97cce00aaad2b4fcdf8f3c"><td class="memItemLeft" align="right" valign="top"><a id="a63cd04310b97cce00aaad2b4fcdf8f3c" name="a63cd04310b97cce00aaad2b4fcdf8f3c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>canal</b></td></tr>
+<tr class="memdesc:a63cd04310b97cce00aaad2b4fcdf8f3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Número X do arquivo in_voltageX_raw. <br /></td></tr>
+<tr class="separator:a63cd04310b97cce00aaad2b4fcdf8f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a4c7dcbc5b4e42fcb3d140787491f4" id="r_ad0a4c7dcbc5b4e42fcb3d140787491f4"><td class="memItemLeft" align="right" valign="top"><a id="ad0a4c7dcbc5b4e42fcb3d140787491f4" name="ad0a4c7dcbc5b4e42fcb3d140787491f4"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>caminhoIio</b></td></tr>
+<tr class="memdesc:ad0a4c7dcbc5b4e42fcb3d140787491f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Diretório do dispositivo IIO. <br /></td></tr>
+<tr class="separator:ad0a4c7dcbc5b4e42fcb3d140787491f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a5b3d2abb45fe1633c368f49fd81041" id="r_a1a5b3d2abb45fe1633c368f49fd81041"><td class="memItemLeft" align="right" valign="top"><a id="a1a5b3d2abb45fe1633c368f49fd81041" name="a1a5b3d2abb45fe1633c368f49fd81041"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>nivelAtivoAlto</b></td></tr>
+<tr class="memdesc:a1a5b3d2abb45fe1633c368f49fd81041"><td class="mdescLeft">&#160;</td><td class="mdescRight">true se o sensor vai a nível alto ao vibrar. <br /></td></tr>
+<tr class="separator:a1a5b3d2abb45fe1633c368f49fd81041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb53a772a17ca7d9be5575ca26bc2a30" id="r_aeb53a772a17ca7d9be5575ca26bc2a30"><td class="memItemLeft" align="right" valign="top"><a id="aeb53a772a17ca7d9be5575ca26bc2a30" name="aeb53a772a17ca7d9be5575ca26bc2a30"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>tensaoReferencia</b></td></tr>
+<tr class="memdesc:aeb53a772a17ca7d9be5575ca26bc2a30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tensão de fundo de escala do ADC, em volts. <br /></td></tr>
+<tr class="separator:aeb53a772a17ca7d9be5575ca26bc2a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acff32b9ce4be757832515435bf022924" id="r_acff32b9ce4be757832515435bf022924"><td class="memItemLeft" align="right" valign="top"><a id="acff32b9ce4be757832515435bf022924" name="acff32b9ce4be757832515435bf022924"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>valorMaximoAdc</b></td></tr>
+<tr class="memdesc:acff32b9ce4be757832515435bf022924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maior valor bruto possível do ADC. <br /></td></tr>
+<tr class="separator:acff32b9ce4be757832515435bf022924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
+<div class="textblock"><p>Lê e interpreta o módulo sensor de vibração digital SW-420. </p>
+<p>O módulo SW-420 possui um comparador (LM393) que entrega uma saída digital: em repouso a saída fica em um nível lógico e, ao detectar vibração, passa para o nível oposto. A sensibilidade é ajustada no potenciômetro do módulo.</p>
+<p>No kit STM32MP1-DK1 o pino de sinal é ligado a uma entrada do ADC, portanto a leitura é feita pelo subsistema IIO do Linux, no arquivo <code>/sys/bus/iio/devices/iio:device0/in_voltageX_raw</code>. A classe converte o valor bruto do ADC em tensão e decide se há vibração comparando essa tensão com metade da tensão de referência.</p>
+<p>Exemplo de uso: </p><div class="fragment"><div class="line"><a class="code hl_function" href="#a0ccd3fb8a7c764f359e047888f050870">SensorVibracao</a> sensor(4);   <span class="comment">// sensor ligado ao canal in_voltage4_raw</span></div>
+<div class="line"><span class="keywordtype">bool</span> vibrando;</div>
+<div class="line"><span class="keywordflow">if</span> (sensor.vibracaoDetectada(vibrando)) {</div>
+<div class="line">    <span class="comment">// usa o resultado</span></div>
+<div class="line">}</div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a0ccd3fb8a7c764f359e047888f050870"><div class="ttname"><a href="#a0ccd3fb8a7c764f359e047888f050870">SensorVibracao::SensorVibracao</a></div><div class="ttdeci">SensorVibracao(int canal=0, const std::string &amp;caminhoIio=&quot;/sys/bus/iio/devices/iio:device0&quot;, bool nivelAtivoAlto=true, double tensaoReferencia=3.3, int valorMaximoAdc=4095)</div><div class="ttdoc">Constrói o sensor.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:12</div></div>
+</div><!-- fragment --><dl class="section note"><dt>Observação</dt><dd>O número do canal depende da ligação física e é descoberto na bancada (conectar o pino ao GND e ver qual <code>in_voltageX_raw</code> retorna zero). </dd></dl>
+</div><h2 class="groupheader">Construtores e Destrutores</h2>
+<a id="a0ccd3fb8a7c764f359e047888f050870" name="a0ccd3fb8a7c764f359e047888f050870"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ccd3fb8a7c764f359e047888f050870">&#9670;&#160;</a></span>SensorVibracao()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SensorVibracao::SensorVibracao </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>canal</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>caminhoIio</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;/sys/bus/iio/devices/iio:device0&quot;</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>nivelAtivoAlto</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>tensaoReferencia</em></span><span class="paramdefsep"> = </span><span class="paramdefval">3.3</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>valorMaximoAdc</em></span><span class="paramdefsep"> = </span><span class="paramdefval">4095</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constrói o sensor. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">canal</td><td>Número X do canal ADC (arquivo in_voltageX_raw). </td></tr>
+    <tr><td class="paramname">caminhoIio</td><td>Diretório IIO. O padrão é o do kit STM32MP1. </td></tr>
+    <tr><td class="paramname">nivelAtivoAlto</td><td>true se a saída do módulo vai a nível alto ao detectar vibração; false se vai a nível baixo. </td></tr>
+    <tr><td class="paramname">tensaoReferencia</td><td>Tensão de fundo de escala do ADC, em volts. </td></tr>
+    <tr><td class="paramname">valorMaximoAdc</td><td>Maior valor bruto do ADC (4095 para 12 bits).</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Valores inválidos (canal negativo, tensão ou valor máximo não positivos) são substituídos pelos valores padrão. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentação das funções</h2>
+<a id="ab32886efc15df80b01493f57609c4272" name="ab32886efc15df80b01493f57609c4272"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab32886efc15df80b01493f57609c4272">&#9670;&#160;</a></span>caminhoDoCanal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string SensorVibracao::caminhoDoCanal </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Monta o caminho completo do arquivo bruto do canal. </p>
+<dl class="section return"><dt>Retorna</dt><dd>Texto no formato "&lt;caminhoIio&gt;/in_voltage&lt;canal&gt;_raw". </dd></dl>
+
+</div>
+</div>
+<a id="a67f9a9a69bc164557dbdaab18532f1a3" name="a67f9a9a69bc164557dbdaab18532f1a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67f9a9a69bc164557dbdaab18532f1a3">&#9670;&#160;</a></span>getCaminhoIio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string SensorVibracao::getCaminhoIio </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informa o diretório IIO usado. </p>
+<dl class="section return"><dt>Retorna</dt><dd>Caminho do diretório do dispositivo IIO. </dd></dl>
+
+</div>
+</div>
+<a id="a0957597ebdad0b3dfb833d22c9642640" name="a0957597ebdad0b3dfb833d22c9642640"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0957597ebdad0b3dfb833d22c9642640">&#9670;&#160;</a></span>getCanal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SensorVibracao::getCanal </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Informa o canal ADC usado. </p>
+<dl class="section return"><dt>Retorna</dt><dd>Número X do arquivo in_voltageX_raw. </dd></dl>
+
+</div>
+</div>
+<a id="a29a4992f13c1df8ced9dbda7b340ba37" name="a29a4992f13c1df8ced9dbda7b340ba37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29a4992f13c1df8ced9dbda7b340ba37">&#9670;&#160;</a></span>lerBruto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SensorVibracao::lerBruto </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;</td>          <td class="paramname"><span class="paramname"><em>valorBruto</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lê o valor bruto do ADC. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">valorBruto</td><td>Recebe o valor lido (só é alterado em caso de sucesso). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Retorna</dt><dd>true se a leitura foi bem-sucedida; false se o arquivo não pôde ser aberto ou não continha um número. </dd></dl>
+
+</div>
+</div>
+<a id="a1e9b02fd2cb36d72595fa81d9917b532" name="a1e9b02fd2cb36d72595fa81d9917b532"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e9b02fd2cb36d72595fa81d9917b532">&#9670;&#160;</a></span>lerTensao()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SensorVibracao::lerTensao </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;</td>          <td class="paramname"><span class="paramname"><em>tensao</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lê o sinal do sensor já convertido para volts. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">tensao</td><td>Recebe a tensão em volts (só é alterada em caso de sucesso). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Retorna</dt><dd>true se a leitura foi bem-sucedida; false caso contrário. </dd></dl>
+
+</div>
+</div>
+<a id="a30a1eb1bac6621dced0cb73efa3fdcc1" name="a30a1eb1bac6621dced0cb73efa3fdcc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30a1eb1bac6621dced0cb73efa3fdcc1">&#9670;&#160;</a></span>medirIntensidade()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SensorVibracao::medirIntensidade </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>amostras</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>intervaloMs</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;</td>          <td class="paramname"><span class="paramname"><em>intensidade</em></span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mede a intensidade de vibração em uma janela de várias amostras. </p>
+<p>A vibração gera pulsos curtos na saída do sensor, e uma única leitura pode perdê-los. Por isso esta função lê várias vezes e informa em que porcentagem das leituras houve vibração.</p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">amostras</td><td>Quantidade de leituras (deve ser maior que zero). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">intervaloMs</td><td>Pausa entre leituras, em milissegundos. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">intensidade</td><td>Percentual (0 a 100) de amostras com vibração. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Retorna</dt><dd>true se todas as leituras foram bem-sucedidas; false se alguma falhou ou se <code class="param">amostras</code> não é positivo. </dd></dl>
+
+</div>
+</div>
+<a id="acd801dbf7802887ca4da215b51f550cd" name="acd801dbf7802887ca4da215b51f550cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd801dbf7802887ca4da215b51f550cd">&#9670;&#160;</a></span>vibracaoDetectada()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SensorVibracao::vibracaoDetectada </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>detectada</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Verifica se, neste instante, o sensor indica vibração. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">detectada</td><td>true se há vibração (só é alterada em caso de sucesso). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Retorna</dt><dd>true se a leitura foi bem-sucedida; false caso contrário. </dd></dl>
+
+</div>
+</div>
+<hr/>A documentação para essa classe foi gerada a partir dos seguintes arquivos:<ul>
+<li>src/<a class="el" href="_sensor_vibracao_8h_source.html">SensorVibracao.h</a></li>
+<li>src/<a class="el" href="_sensor_vibracao_8cpp.html">SensorVibracao.cpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="class_sensor_vibracao.html">SensorVibracao</a></li>
+    <li class="footer">Gerado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

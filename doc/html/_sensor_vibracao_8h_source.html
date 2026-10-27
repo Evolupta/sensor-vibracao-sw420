@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sensor de Vibracao SW-420: Código-Fonte de src/SensorVibracao.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+  $(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Sensor de Vibracao SW-420
+   </div>
+   <div id="projectbrief">Projeto de Programacao Aplicada 2026 - Monitoramento Inteligente de Carga</div>
+  </td>
+    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
+          <input type="text" id="MSearchField" value="" placeholder="Busca" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('_sensor_vibracao_8h_source.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrado</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">SensorVibracao.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="_sensor_vibracao_8h.html">Ir para a documentação desse arquivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#ifndef SENSOR_VIBRACAO_H</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define SENSOR_VIBRACAO_H</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span></div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="};">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_sensor_vibracao.html">   39</a></span><span class="keyword">class </span><a class="code hl_function" href="class_sensor_vibracao.html#a0ccd3fb8a7c764f359e047888f050870">SensorVibracao</a> {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="class_sensor_vibracao.html#a63cd04310b97cce00aaad2b4fcdf8f3c">   41</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="class_sensor_vibracao.html#a63cd04310b97cce00aaad2b4fcdf8f3c">canal</a>;                  </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_sensor_vibracao.html#ad0a4c7dcbc5b4e42fcb3d140787491f4">   42</a></span>    std::string <a class="code hl_variable" href="class_sensor_vibracao.html#ad0a4c7dcbc5b4e42fcb3d140787491f4">caminhoIio</a>;     </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="class_sensor_vibracao.html#a1a5b3d2abb45fe1633c368f49fd81041">   43</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_sensor_vibracao.html#a1a5b3d2abb45fe1633c368f49fd81041">nivelAtivoAlto</a>;        </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_sensor_vibracao.html#aeb53a772a17ca7d9be5575ca26bc2a30">   44</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="class_sensor_vibracao.html#aeb53a772a17ca7d9be5575ca26bc2a30">tensaoReferencia</a>;    </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_sensor_vibracao.html#acff32b9ce4be757832515435bf022924">   45</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="class_sensor_vibracao.html#acff32b9ce4be757832515435bf022924">valorMaximoAdc</a>;         </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    std::string <a class="code hl_function" href="class_sensor_vibracao.html#ab32886efc15df80b01493f57609c4272">caminhoDoCanal</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <a class="code hl_function" href="class_sensor_vibracao.html#a0ccd3fb8a7c764f359e047888f050870">SensorVibracao</a>(<span class="keywordtype">int</span> <a class="code hl_variable" href="class_sensor_vibracao.html#a63cd04310b97cce00aaad2b4fcdf8f3c">canal</a> = 0,</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                   <span class="keyword">const</span> std::string&amp; <a class="code hl_variable" href="class_sensor_vibracao.html#ad0a4c7dcbc5b4e42fcb3d140787491f4">caminhoIio</a> = <span class="stringliteral">&quot;/sys/bus/iio/devices/iio:device0&quot;</span>,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                   <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_sensor_vibracao.html#a1a5b3d2abb45fe1633c368f49fd81041">nivelAtivoAlto</a> = <span class="keyword">true</span>,</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                   <span class="keywordtype">double</span> <a class="code hl_variable" href="class_sensor_vibracao.html#aeb53a772a17ca7d9be5575ca26bc2a30">tensaoReferencia</a> = 3.3,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                   <span class="keywordtype">int</span> <a class="code hl_variable" href="class_sensor_vibracao.html#acff32b9ce4be757832515435bf022924">valorMaximoAdc</a> = 4095);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_sensor_vibracao.html#a29a4992f13c1df8ced9dbda7b340ba37">lerBruto</a>(<span class="keywordtype">int</span>&amp; valorBruto) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_sensor_vibracao.html#a1e9b02fd2cb36d72595fa81d9917b532">lerTensao</a>(<span class="keywordtype">double</span>&amp; tensao) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_sensor_vibracao.html#acd801dbf7802887ca4da215b51f550cd">vibracaoDetectada</a>(<span class="keywordtype">bool</span>&amp; detectada) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_sensor_vibracao.html#a30a1eb1bac6621dced0cb73efa3fdcc1">medirIntensidade</a>(<span class="keywordtype">int</span> amostras, <span class="keywordtype">int</span> intervaloMs, <span class="keywordtype">double</span>&amp; intensidade) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="class_sensor_vibracao.html#a0957597ebdad0b3dfb833d22c9642640">getCanal</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    std::string <a class="code hl_function" href="class_sensor_vibracao.html#a67f9a9a69bc164557dbdaab18532f1a3">getCaminhoIio</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>};</div>
+</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#endif </span><span class="comment">// SENSOR_VIBRACAO_H</span></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a0957597ebdad0b3dfb833d22c9642640"><div class="ttname"><a href="class_sensor_vibracao.html#a0957597ebdad0b3dfb833d22c9642640">SensorVibracao::getCanal</a></div><div class="ttdeci">int getCanal() const</div><div class="ttdoc">Informa o canal ADC usado.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:90</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a0ccd3fb8a7c764f359e047888f050870"><div class="ttname"><a href="class_sensor_vibracao.html#a0ccd3fb8a7c764f359e047888f050870">SensorVibracao::SensorVibracao</a></div><div class="ttdeci">SensorVibracao(int canal=0, const std::string &amp;caminhoIio=&quot;/sys/bus/iio/devices/iio:device0&quot;, bool nivelAtivoAlto=true, double tensaoReferencia=3.3, int valorMaximoAdc=4095)</div><div class="ttdoc">Constrói o sensor.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:12</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a1a5b3d2abb45fe1633c368f49fd81041"><div class="ttname"><a href="class_sensor_vibracao.html#a1a5b3d2abb45fe1633c368f49fd81041">SensorVibracao::nivelAtivoAlto</a></div><div class="ttdeci">bool nivelAtivoAlto</div><div class="ttdoc">true se o sensor vai a nível alto ao vibrar.</div><div class="ttdef"><b>Definição</b> SensorVibracao.h:43</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a1e9b02fd2cb36d72595fa81d9917b532"><div class="ttname"><a href="class_sensor_vibracao.html#a1e9b02fd2cb36d72595fa81d9917b532">SensorVibracao::lerTensao</a></div><div class="ttdeci">bool lerTensao(double &amp;tensao) const</div><div class="ttdoc">Lê o sinal do sensor já convertido para volts.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:43</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a29a4992f13c1df8ced9dbda7b340ba37"><div class="ttname"><a href="class_sensor_vibracao.html#a29a4992f13c1df8ced9dbda7b340ba37">SensorVibracao::lerBruto</a></div><div class="ttdeci">bool lerBruto(int &amp;valorBruto) const</div><div class="ttdoc">Lê o valor bruto do ADC.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:28</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a30a1eb1bac6621dced0cb73efa3fdcc1"><div class="ttname"><a href="class_sensor_vibracao.html#a30a1eb1bac6621dced0cb73efa3fdcc1">SensorVibracao::medirIntensidade</a></div><div class="ttdeci">bool medirIntensidade(int amostras, int intervaloMs, double &amp;intensidade) const</div><div class="ttdoc">Mede a intensidade de vibração em uma janela de várias amostras.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:65</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a63cd04310b97cce00aaad2b4fcdf8f3c"><div class="ttname"><a href="class_sensor_vibracao.html#a63cd04310b97cce00aaad2b4fcdf8f3c">SensorVibracao::canal</a></div><div class="ttdeci">int canal</div><div class="ttdoc">Número X do arquivo in_voltageX_raw.</div><div class="ttdef"><b>Definição</b> SensorVibracao.h:41</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_a67f9a9a69bc164557dbdaab18532f1a3"><div class="ttname"><a href="class_sensor_vibracao.html#a67f9a9a69bc164557dbdaab18532f1a3">SensorVibracao::getCaminhoIio</a></div><div class="ttdeci">std::string getCaminhoIio() const</div><div class="ttdoc">Informa o diretório IIO usado.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:94</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_ab32886efc15df80b01493f57609c4272"><div class="ttname"><a href="class_sensor_vibracao.html#ab32886efc15df80b01493f57609c4272">SensorVibracao::caminhoDoCanal</a></div><div class="ttdeci">std::string caminhoDoCanal() const</div><div class="ttdoc">Monta o caminho completo do arquivo bruto do canal.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:24</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_acd801dbf7802887ca4da215b51f550cd"><div class="ttname"><a href="class_sensor_vibracao.html#acd801dbf7802887ca4da215b51f550cd">SensorVibracao::vibracaoDetectada</a></div><div class="ttdeci">bool vibracaoDetectada(bool &amp;detectada) const</div><div class="ttdoc">Verifica se, neste instante, o sensor indica vibração.</div><div class="ttdef"><b>Definição</b> SensorVibracao.cpp:53</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_acff32b9ce4be757832515435bf022924"><div class="ttname"><a href="class_sensor_vibracao.html#acff32b9ce4be757832515435bf022924">SensorVibracao::valorMaximoAdc</a></div><div class="ttdeci">int valorMaximoAdc</div><div class="ttdoc">Maior valor bruto possível do ADC.</div><div class="ttdef"><b>Definição</b> SensorVibracao.h:45</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_ad0a4c7dcbc5b4e42fcb3d140787491f4"><div class="ttname"><a href="class_sensor_vibracao.html#ad0a4c7dcbc5b4e42fcb3d140787491f4">SensorVibracao::caminhoIio</a></div><div class="ttdeci">std::string caminhoIio</div><div class="ttdoc">Diretório do dispositivo IIO.</div><div class="ttdef"><b>Definição</b> SensorVibracao.h:42</div></div>
+<div class="ttc" id="aclass_sensor_vibracao_html_aeb53a772a17ca7d9be5575ca26bc2a30"><div class="ttname"><a href="class_sensor_vibracao.html#aeb53a772a17ca7d9be5575ca26bc2a30">SensorVibracao::tensaoReferencia</a></div><div class="ttdeci">double tensaoReferencia</div><div class="ttdoc">Tensão de fundo de escala do ADC, em volts.</div><div class="ttdef"><b>Definição</b> SensorVibracao.h:44</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_sensor_vibracao_8h.html">SensorVibracao.h</a></li>
+    <li class="footer">Gerado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+=== 1. Montando pastas compartilhadas / CD ===
+=== 2. Copiando arquivos para C:\Users\rapha e Desktop ===
+'/mnt/desktop/arm-buildroot-linux-gnueabihf_sdk-DK2.tar.gz' -> '/home/raphael/arm-buildroot-linux-gnueabihf_sdk-DK2.tar.gz'
+=== 3. Extraindo a toolchain (arm-buildroot-linux-gnueabihf_sdk-DK2.tar.gz) ===
+=== 5. Testando compilacao local (x86_64 Linux) ===
+rm -rf build doc
+mkdir -p build
+g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp -o build/teste_sensor
+[Aviso] Hardware IIO (/sys/bus/iio/...) nao detectado neste ambiente.
+[Aviso] Executando em modo de simulacao local (./in_voltage0_raw).
+
+Sensor SW-420 | canal 0 | .
+
+--- Leituras instantaneas ---
+Leitura 1 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 2 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 3 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 4 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 5 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 6 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 7 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 8 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 9 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 10 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 11 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 12 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 13 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 14 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 15 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 16 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 17 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 18 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+Leitura 19 | bruto = 3100 | tensao = 2.49817 V | vibracao = SIM
+Leitura 20 | bruto = 350 | tensao = 0.282051 V | vibracao = nao
+
+--- Intensidade em janela de 20 amostras (100 ms) ---
+Intensidade de vibracao: 100 %
+=== 6. Compilando para a placa ARM STM32MP1 (Cross-Compile) ===
+rm -rf build doc
+mkdir -p build
+/home/raphael/arm-buildroot-linux-gnueabihf_sdk-buildroot/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/bin/arm-buildroot-linux-gnueabihf-g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp -o build/teste_sensor
+./build/teste_sensor: ELF 32-bit LSB pie executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 6.9.0, not stripped
+=== CONCLUIDO COM SUCESSO! ===
