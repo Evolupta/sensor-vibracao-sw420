@@ -53,7 +53,7 @@ private:
 public:
     /**
      * @brief Constrói o sensor.
-     * @param canal Número X do canal ADC (arquivo in_voltageX_raw, padrão 6 no pino A4).
+     * @param canal Número X do canal ADC (arquivo in_voltageX_raw, padrão 6 no código; usar 13 na montagem validada).
      * @param caminhoIio Diretório IIO. O padrão é o do kit STM32MP1.
      * @param nivelAtivoAlto true se a saída do módulo vai a nível alto ao
      *        detectar vibração; false se vai a nível baixo.
@@ -76,6 +76,20 @@ public:
      *         ser aberto ou não continha um número.
      */
     bool lerBruto(int& valorBruto) const;
+
+    /**
+     * @brief Faz UMA única leitura do ADC e deriva dela o bruto, a tensão e o estado.
+     *
+     * Ao contrário de chamar lerBruto(), lerTensao() e vibracaoDetectada() em
+     * sequência (três leituras de arquivo, possivelmente com valores diferentes),
+     * este método garante que os três resultados vêm da mesma amostra.
+     *
+     * @param[out] valorBruto Valor bruto do ADC.
+     * @param[out] tensao Tensão em volts correspondente ao valor bruto.
+     * @param[out] detectada true se a amostra indica vibração.
+     * @return true se a leitura foi bem-sucedida (saídas só são alteradas nesse caso).
+     */
+    bool lerAmostra(int& valorBruto, double& tensao, bool& detectada) const;
 
     /**
      * @brief Lê o sinal do sensor já convertido para volts.

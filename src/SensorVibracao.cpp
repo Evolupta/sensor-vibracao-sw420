@@ -40,6 +40,21 @@ bool SensorVibracao::lerBruto(int& valorBruto) const {
     return true;
 }
 
+bool SensorVibracao::lerAmostra(int& valorBruto, double& tensao, bool& detectada) const {
+    int bruto = 0;
+    if (!lerBruto(bruto)) {
+        return false;
+    }
+
+    double volts = (double)bruto * tensaoReferencia / valorMaximoAdc;
+    bool nivelAlto = (volts >= tensaoReferencia / 2.0);
+
+    valorBruto = bruto;
+    tensao = volts;
+    detectada = (nivelAlto == nivelAtivoAlto);
+    return true;
+}
+
 bool SensorVibracao::lerTensao(double& tensao) const {
     int bruto = 0;
     if (!lerBruto(bruto)) {
