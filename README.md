@@ -1,124 +1,148 @@
 # Sensor de Vibração SW-420 — Monitoramento Inteligente de Carga
 
-Projeto de Programação Aplicada 2026 (IME) — grupo do **Sensor de Vibração (SW-420, digital)**.
+Projeto de Programação Aplicada 2026 (IME) — grupo do sensor digital de vibração **SW-420**.  
+Integrantes: **Ferraiollo, Brasil Barreto e Oppelt**.
 
-## Descrição geral
+## Estado: Entrega 2 — programa executado no kit físico
 
-O sistema monitora a integridade de uma carga sensível. Este módulo é responsável
-pelo sensor de vibração **SW-420**, que detecta movimentações, impactos ou
-transporte indevido. Ele roda no kit **STM32MP1-DK1** (Linux embarcado) e, nas
-próximas etapas, enviará os dados por UDP a um servidor central com interface gráfica.
+O sistema monitora a movimentação de uma carga sensível. Esta etapa implementa e documenta a leitura contínua do sensor SW-420 no kit **STM32MP1-DK1**, com Linux embarcado, registro de cada leitura e alerta ao detectar vibração. O envio por UDP e a interface gráfica são previstos para etapas futuras e **não fazem parte desta entrega**.
 
-**Estado atual: Entrega 1** — classe C++ de leitura do sensor, documentada com Doxygen.
+**Validação real realizada em 02/11/2026:** compilação cruzada ARM preparada na VM Ubuntu e execução no kit STM32MP1-DK1, com o sensor ligado à alimentação de 3,3 V. No ensaio registrado, o ADC **canal 13** foi utilizado explicitamente, com **0/30 detecções em repouso** e **13/50 detecções durante a vibração** (26% das amostras). O programa registrou pulsos altos de até 3,300 V e apresentou alertas. O log integral está em [`resultado_teste_kit.txt`](resultado_teste_kit.txt).
 
-## Como o sensor é lido
+> **Interpretação:** 26% é a fração de amostras que capturaram nível alto durante a janela; não é a taxa de acerto nem a eficiência do sensor. Os pulsos do SW-420 são breves. O relógio do kit mostrava o ano 2000 durante a coleta, portanto as datas do log não representam a data civil do ensaio.
 
-O SW-420 tem saída digital (comparador LM393), mas no kit o pino de sinal é ligado a
-uma **entrada do ADC**. A leitura é feita pelo subsistema IIO do Linux:
+## Hardware e leitura
 
-```
-/sys/bus/iio/devices/iio:device0/in_voltageX_raw
-```
+- **Sensor:** SW-420 com saída digital pelo comparador LM393.
+- **Alimentação:** VCC em **3V3** (**nunca 5 V**), GND em GND.
+- **Sinal DO:** conectado a uma entrada analógica da placa; o canal IIO **13** foi o que mostrou resposta clara ao movimento na montagem ensaiada. Confirme a correspondência entre pino físico e canal ADC no seu kit antes de reproduzir a montagem; as instruções antigas divergiam nesse mapeamento.
+- **Interface:** `/sys/bus/iio/devices/iio:device0/in_voltageX_raw`, onde `X` é o canal numérico exposto pelo Linux.
+- **Conversão:** `tensao = bruto * 3,3 / 65535` (referência e resolução usados no ensaio).
+- **Detecção:** `VIBRANDO` quando a tensão da amostra é maior ou igual a **1,65 V** (nível alto).
 
-A classe converte o valor bruto em volts (`bruto * tensaoReferencia / valorMaximoAdc`)
-e considera **nível alto** quando a tensão é maior ou igual à metade da referência.
+A classe `SensorVibracao::lerAmostra` calcula valor bruto, tensão e estado a partir **da mesma leitura** do ADC, evitando inconsistência por múltiplas leituras sucessivas.
 
-Ligação (3,3 V, **nunca 5 V**): VCC → 3V3 · GND → GND · Sinal → pino do ADC.
+## Arquivos principais
 
-## Estrutura do código
-
-| Arquivo | Conteúdo |
+| Arquivo | Descrição |
 |---|---|
-| `src/SensorVibracao.h` | Declaração e documentação Doxygen da classe |
-| `src/SensorVibracao.cpp` | Implementação da classe |
-| `src/main.cpp` | Programa de teste (apenas instancia e testa a classe) |
-| `Doxyfile` | Configuração da documentação |
-| `Makefile` | Compilação nativa e cruzada |
-
-```mermaid
-classDiagram
-    class SensorVibracao {
-        -int canal
-        -string caminhoIio
-        -bool nivelAtivoAlto
-        -double tensaoReferencia
-        -int valorMaximoAdc
-        -caminhoDoCanal() string
-        +SensorVibracao(canal, caminhoIio, nivelAtivoAlto, tensaoReferencia, valorMaximoAdc)
-        +lerBruto(int&) bool
-        +lerTensao(double&) bool
-        +vibracaoDetectada(bool&) bool
-        +medirIntensidade(amostras, intervaloMs, double&) bool
-        +getCanal() int
-        +getCaminhoIio() string
-    }
-```
-
-### Métodos
-
-- `lerBruto(int&)` — lê o valor bruto do ADC.
-- `lerTensao(double&)` — valor bruto convertido para volts.
-- `vibracaoDetectada(bool&)` — há vibração neste instante?
-- `medirIntensidade(amostras, intervaloMs, double&)` — percentual (0–100) de amostras
-  com vibração em uma janela. Existe porque a vibração gera pulsos curtos e uma única
-  leitura pode perdê-los.
-
-Todos os métodos de leitura retornam `bool` (`false` se o arquivo não abrir ou não
-contiver um número) e só alteram o parâmetro de saída em caso de sucesso.
+| `src/SensorVibracao.h/.cpp` | Classe de acesso ao ADC e interpretação de vibração; comentários Doxygen |
+| `src/MonitorSensor.h/.cpp` | Laço de monitoramento, timestamp, alertas e resumo estatístico |
+| `src/main.cpp` | Recebe os argumentos e instancia as classes |
+| `Makefile` | Compilação nativa ou cruzada |
+| `Doxyfile` | Configuração do Doxygen |
+| `compilar_arm.sh` | Auxiliar de compilação usado na VM do projeto (ambiente e caminhos específicos) |
+| `teste_sensor_arm` | Executável ARM pré-compilado fornecido com a Entrega 2 |
+| `teste_no_kit.sh` | Teste de bancada em repouso (30) e vibração (50) |
+| `resultado_teste_kit.txt` | Log integral da execução física validada, canal 13 |
+| `resultado_compilacao_arm.txt` | Registro da compilação/testes em VM fornecido com a entrega |
+| `INSTRUCOES_TESTE_KIT.md` | Guia de ligação, execução e diagnóstico no kit |
 
 ## Dependências
 
-- Compilador C++11 (`g++`) e `make`.
-- Doxygen (opcional, para gerar a documentação).
-- Para o kit: toolchain `arm-buildroot-linux-gnueabihf` fornecida pelo professor.
+- Para compilar no PC Linux: `make` e compilador C++11 (`g++`).
+- Para compilar para o kit: toolchain **`arm-buildroot-linux-gnueabihf-g++`** compatível com a imagem Linux instalada (SDK indicado pelo professor).
+- Doxygen é opcional, usado para gerar documentação HTML.
+- Para **executar** o binário ARM pré-compilado no kit não é necessário instalar a VM no PC que está conectado à placa, desde que o binário seja compatível com o Linux do kit.
 
-## Compilação e execução
+## Compilação
 
-**No PC (Linux):**
+### Compilação nativa (PC Linux)
 
 ```bash
+make clean
 make
-./build/teste_sensor <canal> [caminho_iio]
 ```
 
-**Compilação cruzada para o kit** (após carregar o ambiente da toolchain extraída
-do `arm-buildroot-linux-gnueabihf_sdk-DK2.tar.gz`):
+Exemplo de teste sem hardware, com arquivo IIO simulado:
 
 ```bash
+mkdir -p /tmp/iio_sim
+echo 52000 > /tmp/iio_sim/in_voltage13_raw
+./build/teste_sensor 13 100 5 /tmp/iio_sim
+```
+
+Esse teste simulado **não** substitui a validação com o SW-420 físico.
+
+### Compilação cruzada ARM (VM Ubuntu com SDK configurado)
+
+```bash
+make clean
 make CXX=arm-buildroot-linux-gnueabihf-g++
-scp build/teste_sensor root@192.168.42.2:/home/root
-# no kit:
-./teste_sensor <canal>
+file build/teste_sensor
 ```
 
-`<canal>` é o número X de `in_voltageX_raw` (no kit STM32MP1-DK1, os canais expostos em `iio:device0` são **6** para o pino A4 e **13** para o pino A5, com ADC de 16 bits `0..65535`). Sem argumentos, usa o canal 6.
+O comando `file` deverá identificar um executável ARM de 32 bits compatível com a ABI e o sistema da placa. Se a toolchain não estiver no `PATH`, use seu caminho absoluto com `make CXX=/caminho/para/arm-buildroot-linux-gnueabihf-g++`.
 
-**Documentação:**
+O script `compilar_arm.sh` faz a compilação e testes no ambiente específico da VM utilizada pelo grupo; ele utiliza a pasta compartilhada `projeto` e pode exigir adaptação dos caminhos em outros computadores.
+
+## Transferência e execução no kit
+
+**Com Ethernet**, usando os endereços da bancada, se estiverem configurados:
 
 ```bash
-make doc        # gera doc/html/index.html
+scp build/teste_sensor root@192.168.42.2:/home/root/teste_sensor
+scp teste_no_kit.sh root@192.168.42.2:/home/root/teste_no_kit.sh
+ssh root@192.168.42.2
 ```
 
-## Itens validados na bancada (Kit STM32MP1-DK1)
+Alternativamente, transfira `teste_sensor_arm` como `/home/root/teste_sensor` e o script usando outro método já verificado para a configuração do kit (por exemplo, porta serial com Tera Term). A transferência serial depende da interface disponível; **a mera mensagem de conclusão de um script não comprova que os arquivos foram recebidos**. Confirme os arquivos e seu hash antes de executar.
 
-- [x] Descobrir os canais ADC reais no kit (`iio:device0/in_voltage6_raw` no pino A4 e `iio:device0/in_voltage13_raw` no pino A5).
-- [x] Confirmar a **polaridade** do módulo (repouso em nível baixo $\approx 0{,}13\text{ V}$, ativo em nível alto $\ge 1{,}65\text{ V}$ ao vibrar).
-- [x] Confirmar a **resolução e a referência do ADC** no STM32MP1-DK1 (`3,3 V` e `65535`, resolução de 16 bits).
-- [x] Validar a compilação cruzada com `arm-buildroot-linux-gnueabihf-g++` na máquina virtual Ubuntu.
-- [x] Transferir e executar o binário ARM nativamente na placa física **STM32MP1-DK1** (`Linux STM32MP1 6.9.8 armv7l`).
-- [ ] Ajustar o potenciômetro de sensibilidade do módulo conforme necessidade do teste de impacto.
-- [ ] Etapas seguintes: envio UDP e protocolo, interface gráfica, fluxograma,
-      capturas de tela e análise dos valores medidos.
+No terminal Linux do kit:
 
-## Testes realizados e Evidências
+```sh
+mkdir -p /home/root
+cd /home/root
+chmod +x teste_sensor
+sh teste_no_kit.sh 13
+```
 
-1. **Compilação e teste funcional (Linux x86_64 na VM Ubuntu e Windows):**
-   Compilação com `-std=c++11 -Wall -Wextra -Wpedantic -Werror` e execução das 20 leituras instantâneas alternando entre vibração (`3100` $\rightarrow 2{,}498\text{ V} \rightarrow$ `SIM`) e repouso (`350` $\rightarrow 0{,}282\text{ V} \rightarrow$ `nao`), além do cálculo de intensidade na janela de 20 amostras (`100 %`).
+O script realiza **30 leituras com o sensor em repouso**, conta 5 segundos e então realiza **50 leituras durante o movimento**, com intervalo de 100 ms. O resultado é escrito em `/home/root/resultado_teste_kit.txt` e também exibido no terminal.
 
-2. **Compilação cruzada ARM para o kit STM32MP1-DK1 (`arm-buildroot-linux-gnueabihf-g++`):**
-   ```text
-   /home/raphael/arm-buildroot-linux-gnueabihf_sdk-buildroot/.../bin/arm-buildroot-linux-gnueabihf-g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp -o build/teste_sensor
-   ./build/teste_sensor: ELF 32-bit LSB pie executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 6.9.0, not stripped
-   ```
+### Execução direta / monitoramento contínuo
 
-![Evidência da compilação cruzada e execução na VM Ubuntu](evidencia_compilacao_vm.png)
+```sh
+cd /home/root
+./teste_sensor 13 100 0    # canal 13, intervalo de 100 ms, contínuo até Ctrl+C
+./teste_sensor 13 100 50   # canal 13, 50 amostras
+```
+
+Uso: `./teste_sensor [canal] [intervalo_ms] [leituras] [caminho_iio]`.
+O executável aceita qualquer canal exposto pelo IIO; se nenhum for informado, **o padrão original do programa é 6**, mas **o ensaio validado nesta entrega utilizou explicitamente o canal 13**. Por isso, para reproduzir os dados abaixo, forneça `13` como argumento.
+
+## Testes realizados e resultados
+
+| Condição | Amostras | Alertas | Resultado |
+|---|---:|---:|---|
+| Sensor parado, canal 13 | 30 | 0 | **0,0%** de amostras com vibração |
+| Sensor movimentado, canal 13 | 50 | 13 | **26,0%** de amostras com vibração |
+
+- **Repouso:** ADC bruto de **2522 a 2875**, aproximadamente **0,127 a 0,145 V**, sem alertas.
+- **Com movimento:** ADC bruto de **2510 a 65535**; amostras altas atingiram **3,300 V**, gerando `VIBRANDO <<< ALERTA`.
+- O log registra o ambiente **Linux STM32MP1 6.9.8 armv7l**, confirmando execução na plataforma embarcada. Não foi registrada uma medição de desempenho ou uma taxa de acerto em eventos físicos independentes.
+
+Trecho da leitura real:
+
+```text
+2000-01-01 00:09:41.369 | #   8 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
+2000-01-01 00:09:41.470 | #   9 | bruto =  2583 | tensao = 0.130 V | repouso
+...
+Leituras: 50 | com vibracao: 13 (26.0 %) | bruto minimo: 2510 | bruto maximo: 65535
+```
+
+Documentos de evidência:
+
+- [`resultado_teste_kit.txt`](resultado_teste_kit.txt): log integral do ensaio de 80 amostras no canal 13.
+- [`resultado_compilacao_arm.txt`](resultado_compilacao_arm.txt): saída registrada da compilação em VM.
+- [`evidencia_compilacao_vm.png`](evidencia_compilacao_vm.png): imagem de compilação da etapa anterior já mantida no repositório.
+
+Não foi anexada uma fotografia física da ligação do sensor; caso seja exigida pelo professor, é necessário adicioná-la como evidência complementar.
+
+## Documentação e próximos passos
+
+```bash
+make doc
+# abrir doc/html/index.html
+```
+
+As classes estão documentadas com comentários Doxygen. A integração UDP, o servidor central e a interface gráfica permanecem **fora do escopo desta Entrega 2**.

@@ -1,0 +1,32 @@
+=== 1. Localizando pasta compartilhada ===
+/media/sf_projeto
+=== 2. Copiando fontes para ~/SensorVibracao ===
+=== 3. Localizando a toolchain ARM ===
+/home/raphael/arm-buildroot-linux-gnueabihf_sdk-buildroot/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/bin/arm-buildroot-linux-gnueabihf-g++
+=== 4. Compilacao nativa (x86_64) + teste com IIO simulado ===
+rm -rf build doc
+mkdir -p build
+g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp src/MonitorSensor.cpp -o build/teste_sensor
+Sensor SW-420 | canal 6 | /tmp/iio_sim
+Intervalo: 50 ms | Leituras: 3
+
+2026-11-02 14:44:23.881 | #   1 | bruto =  4000 | tensao = 0.201 V | repouso
+2026-11-02 14:44:23.950 | #   2 | bruto =  4000 | tensao = 0.201 V | repouso
+2026-11-02 14:44:24.001 | #   3 | bruto =  4000 | tensao = 0.201 V | repouso
+
+--- Resumo ---
+Leituras: 3 | com vibracao: 0 (0.0 %) | bruto minimo: 4000 | bruto maximo: 4000
+Sensor SW-420 | canal 6 | /tmp/iio_sim
+Intervalo: 50 ms | Leituras: 3
+
+2026-11-02 14:44:24.003 | #   1 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA
+2026-11-02 14:44:24.224 | #   2 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA
+2026-11-02 14:44:24.288 | #   3 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA
+
+--- Resumo ---
+Leituras: 3 | com vibracao: 3 (100.0 %) | bruto minimo: 52000 | bruto maximo: 52000
+=== 5. Compilacao cruzada para o kit STM32MP1-DK1 (ARM) ===
+rm -rf build doc
+mkdir -p build
+/home/raphael/arm-buildroot-linux-gnueabihf_sdk-buildroot/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/bin/arm-buildroot-linux-gnueabihf-g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp src/MonitorSensor.cpp -o build/teste_sensor
+./build/teste_sensor: ELF 32-bit LSB pie executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 6.9.0, not stripped

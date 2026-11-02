@@ -1,4 +1,4 @@
-# Makefile - Sensor de Vibracao SW-420
+# Makefile - Sensor de Vibracao SW-420 (Entrega 2)
 #
 # Compilacao nativa (PC):
 #     make
@@ -8,12 +8,13 @@
 CXX      ?= g++
 CXXFLAGS += -std=c++11 -Wall -Wextra -O2
 BUILD    = build
-SRC      = src/main.cpp src/SensorVibracao.cpp
+SRC      = src/main.cpp src/SensorVibracao.cpp src/MonitorSensor.cpp
+HDR      = src/SensorVibracao.h src/MonitorSensor.h
 ALVO     = $(BUILD)/teste_sensor
 
 all: $(ALVO)
 
-$(ALVO): $(SRC) src/SensorVibracao.h
+$(ALVO): $(SRC) $(HDR)
 	mkdir -p $(BUILD)
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(ALVO)
 
