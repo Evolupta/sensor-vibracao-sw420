@@ -1,0 +1,59 @@
+﻿=== TESTE DO ENVIO UDP (PC Windows, loopback 127.0.0.1:5005, IIO simulado) ===
+
+--- Cliente (teste_sensor) 1: REPOUSO (bruto 4000) ---
+Sensor SW-420 | canal 6 | C:\Users\rapha\AppData\Local\Temp\iio_sim
+Intervalo: 50 ms | Leituras: 4
+UDP: enviando para 127.0.0.1:5005 | id = VIBRACAO_SW420
+
+2026-11-05 08:27:37.829 | #   1 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
+2026-11-05 08:27:37.899 | #   2 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
+2026-11-05 08:27:37.957 | #   3 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
+2026-11-05 08:27:38.025 | #   4 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
+
+--- Resumo ---
+Leituras: 4 | com vibracao: 0 (0.0 %) | bruto minimo: 4000 | bruto maximo: 4000
+Pacotes UDP enviados: 4 | falhas: 0
+
+--- Cliente (teste_sensor) 2: VIBRACAO (bruto 52000), reiniciado ---
+Sensor SW-420 | canal 6 | C:\Users\rapha\AppData\Local\Temp\iio_sim
+Intervalo: 50 ms | Leituras: 4
+UDP: enviando para 127.0.0.1:5005 | id = VIBRACAO_SW420
+
+2026-11-05 08:27:38.038 | #   1 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2026-11-05 08:27:38.099 | #   2 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2026-11-05 08:27:38.163 | #   3 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2026-11-05 08:27:38.231 | #   4 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+
+--- Resumo ---
+Leituras: 4 | com vibracao: 4 (100.0 %) | bruto minimo: 52000 | bruto maximo: 52000
+Pacotes UDP enviados: 4 | falhas: 0
+
+--- Mensagens manuais: 1 pacote com sequencia faltando (id=OUTRO,seq 5 apos 1) e 1 invalido ---
+
+=== SAIDA DO SERVIDOR (servidor_udp.py) ===
+Servidor UDP ouvindo na porta 5005 (Ctrl+C para parar). Log: C:\Users\rapha\AppData\Local\Temp\log_teste.csv
+08:27:37.829 | VIBRACAO_SW420 #1 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
+08:27:37.899 | VIBRACAO_SW420 #2 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
+08:27:37.957 | VIBRACAO_SW420 #3 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
+08:27:38.025 | VIBRACAO_SW420 #4 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
+08:27:38.038 | VIBRACAO_SW420 #1 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1 [REINICIO do emissor: sequencia voltou a 1]
+08:27:38.099 | VIBRACAO_SW420 #2 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1
+08:27:38.163 | VIBRACAO_SW420 #3 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1
+08:27:38.231 | VIBRACAO_SW420 #4 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1
+[INVALIDO de 127.0.0.1] 'mensagem-quebrada'
+08:25:24.000 | OUTRO #1 | 1.000 V | repouso | bruto=100 | de 127.0.0.1
+08:25:25.000 | OUTRO #5 | 1.000 V | repouso | bruto=100 | de 127.0.0.1 [PERDA: faltaram 3 pacote(s)]
+--- Resumo --- validos: 10 | invalidos: 1 | perdidos: 3 | fora de ordem: 0
+
+=== LOG CSV GERADO PELO SERVIDOR ===
+recebido_em,id_sensor,sequencia,timestamp_ms,valor,unidade,vibracao,bruto
+2026-11-05T08:27:37.832,VIBRACAO_SW420,1,1793878057829,0.201,V,0,4000
+2026-11-05T08:27:37.901,VIBRACAO_SW420,2,1793878057899,0.201,V,0,4000
+2026-11-05T08:27:37.960,VIBRACAO_SW420,3,1793878057957,0.201,V,0,4000
+2026-11-05T08:27:38.027,VIBRACAO_SW420,4,1793878058025,0.201,V,0,4000
+2026-11-05T08:27:38.040,VIBRACAO_SW420,1,1793878058038,2.618,V,1,52000
+2026-11-05T08:27:38.101,VIBRACAO_SW420,2,1793878058099,2.618,V,1,52000
+2026-11-05T08:27:38.165,VIBRACAO_SW420,3,1793878058163,2.618,V,1,52000
+2026-11-05T08:27:38.234,VIBRACAO_SW420,4,1793878058231,2.618,V,1,52000
+2026-11-05T08:27:38.267,OUTRO,1,1793877924000,1.0,V,0,100
+2026-11-05T08:27:38.267,OUTRO,5,1793877925000,1.0,V,0,100

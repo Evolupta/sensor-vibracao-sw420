@@ -3,30 +3,57 @@
 === 2. Copiando fontes para ~/SensorVibracao ===
 === 3. Localizando a toolchain ARM ===
 /home/raphael/arm-buildroot-linux-gnueabihf_sdk-buildroot/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/bin/arm-buildroot-linux-gnueabihf-g++
-=== 4. Compilacao nativa (x86_64) + teste com IIO simulado ===
+=== 4. Compilacao nativa (x86_64) ===
 rm -rf build doc
 mkdir -p build
-g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp src/MonitorSensor.cpp -o build/teste_sensor
+g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp src/MonitorSensor.cpp src/EmissorUdp.cpp -o build/teste_sensor
+=== 5. Teste do envio UDP em loopback (Linux): servidor Python + teste_sensor ===
+Servidor UDP ouvindo na porta 5005 (Ctrl+C para parar). Log: /tmp/log_vm.csv
 Sensor SW-420 | canal 6 | /tmp/iio_sim
-Intervalo: 50 ms | Leituras: 3
+Intervalo: 50 ms | Leituras: 4
+UDP: enviando para 127.0.0.1:5005 | id = VIBRACAO_SW420
 
-2026-11-02 14:44:23.881 | #   1 | bruto =  4000 | tensao = 0.201 V | repouso
-2026-11-02 14:44:23.950 | #   2 | bruto =  4000 | tensao = 0.201 V | repouso
-2026-11-02 14:44:24.001 | #   3 | bruto =  4000 | tensao = 0.201 V | repouso
+2026-11-05 11:34:29.478 | #   1 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
+11:34:29.478 | VIBRACAO_SW420 #1 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
+2026-11-05 11:34:29.529 | #   2 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
+11:34:29.529 | VIBRACAO_SW420 #2 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
+2026-11-05 11:34:29.582 | #   3 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
+11:34:29.582 | VIBRACAO_SW420 #3 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
+2026-11-05 11:34:29.828 | #   4 | bruto =  4000 | tensao = 0.201 V | repouso | UDP: enviado
 
 --- Resumo ---
-Leituras: 3 | com vibracao: 0 (0.0 %) | bruto minimo: 4000 | bruto maximo: 4000
+Leituras: 4 | com vibracao: 0 (0.0 %) | bruto minimo: 4000 | bruto maximo: 4000
+Pacotes UDP enviados: 4 | falhas: 0
+11:34:29.828 | VIBRACAO_SW420 #4 | 0.201 V | repouso | bruto=4000 | de 127.0.0.1
 Sensor SW-420 | canal 6 | /tmp/iio_sim
-Intervalo: 50 ms | Leituras: 3
+Intervalo: 50 ms | Leituras: 4
+UDP: enviando para 127.0.0.1:5005 | id = VIBRACAO_SW420
 
-2026-11-02 14:44:24.003 | #   1 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA
-2026-11-02 14:44:24.224 | #   2 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA
-2026-11-02 14:44:24.288 | #   3 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA
+2026-11-05 11:34:29.836 | #   1 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+11:34:29.836 | VIBRACAO_SW420 #1 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1 [REINICIO do emissor: sequencia voltou a 1]
+2026-11-05 11:34:29.887 | #   2 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+11:34:29.887 | VIBRACAO_SW420 #2 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1
+2026-11-05 11:34:29.939 | #   3 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+11:34:29.939 | VIBRACAO_SW420 #3 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1
+2026-11-05 11:34:29.997 | #   4 | bruto = 52000 | tensao = 2.618 V | VIBRANDO  <<< ALERTA | UDP: enviado
+11:34:29.997 | VIBRACAO_SW420 #4 | 2.618 V | VIBRANDO <<< ALERTA | bruto=52000 | de 127.0.0.1
+--- Resumo --- validos: 8 | invalidos: 0 | perdidos: 0 | fora de ordem: 0
 
 --- Resumo ---
-Leituras: 3 | com vibracao: 3 (100.0 %) | bruto minimo: 52000 | bruto maximo: 52000
-=== 5. Compilacao cruzada para o kit STM32MP1-DK1 (ARM) ===
+Leituras: 4 | com vibracao: 4 (100.0 %) | bruto minimo: 52000 | bruto maximo: 52000
+Pacotes UDP enviados: 4 | falhas: 0
+--- log CSV do servidor ---
+recebido_em,id_sensor,sequencia,timestamp_ms,valor,unidade,vibracao,bruto
+2026-11-05T11:34:29.479,VIBRACAO_SW420,1,1793878469478,0.201,V,0,4000
+2026-11-05T11:34:29.529,VIBRACAO_SW420,2,1793878469529,0.201,V,0,4000
+2026-11-05T11:34:29.582,VIBRACAO_SW420,3,1793878469582,0.201,V,0,4000
+2026-11-05T11:34:29.829,VIBRACAO_SW420,4,1793878469828,0.201,V,0,4000
+2026-11-05T11:34:29.836,VIBRACAO_SW420,1,1793878469836,2.618,V,1,52000
+2026-11-05T11:34:29.887,VIBRACAO_SW420,2,1793878469887,2.618,V,1,52000
+2026-11-05T11:34:29.941,VIBRACAO_SW420,3,1793878469939,2.618,V,1,52000
+2026-11-05T11:34:29.997,VIBRACAO_SW420,4,1793878469997,2.618,V,1,52000
+=== 6. Compilacao cruzada para o kit STM32MP1-DK1 (ARM) ===
 rm -rf build doc
 mkdir -p build
-/home/raphael/arm-buildroot-linux-gnueabihf_sdk-buildroot/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/bin/arm-buildroot-linux-gnueabihf-g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp src/MonitorSensor.cpp -o build/teste_sensor
+/home/raphael/arm-buildroot-linux-gnueabihf_sdk-buildroot/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/usr/bin/arm-buildroot-linux-gnueabihf-g++ -std=c++11 -Wall -Wextra -O2 src/main.cpp src/SensorVibracao.cpp src/MonitorSensor.cpp src/EmissorUdp.cpp -o build/teste_sensor
 ./build/teste_sensor: ELF 32-bit LSB pie executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 6.9.0, not stripped

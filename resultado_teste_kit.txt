@@ -1,106 +1,109 @@
-=== TESTE NO KIT STM32MP1-DK1 - canal 13 ===
+=== TESTE NO KIT STM32MP1-DK1 - canal 13 - UDP para 10.0.1.100:5005 ===
 Linux STM32MP1 6.9.8 #6 SMP PREEMPT Wed Aug 19 14:39:00 -03 2026 armv7l GNU/Linux
-Sat Jan  1 00:09:31 UTC 2000
+Sat Jan  1 01:33:30 UTC 2000
 
---- Leitura direta do ADC (5 amostras) ---
-2655
-2777
-2625
-2611
-2801
+--- ping no PC ---
+PING 10.0.1.100 (10.0.1.100): 56 data bytes
+
+--- 10.0.1.100 ping statistics ---
+2 packets transmitted, 0 packets received, 100% packet loss
 
 === PARTE 1: REPOUSO (sensor parado) - 30 leituras ===
 Sensor SW-420 | canal 13 | /sys/bus/iio/devices/iio:device0
 Intervalo: 100 ms | Leituras: 30
+UDP: enviando para 10.0.1.100:5005 | id = VIBRACAO_SW420
 
-2000-01-01 00:09:32.676 | #   1 | bruto =  2867 | tensao = 0.144 V | repouso
-2000-01-01 00:09:32.777 | #   2 | bruto =  2687 | tensao = 0.135 V | repouso
-2000-01-01 00:09:32.878 | #   3 | bruto =  2522 | tensao = 0.127 V | repouso
-2000-01-01 00:09:32.979 | #   4 | bruto =  2819 | tensao = 0.142 V | repouso
-2000-01-01 00:09:33.079 | #   5 | bruto =  2802 | tensao = 0.141 V | repouso
-2000-01-01 00:09:33.180 | #   6 | bruto =  2697 | tensao = 0.136 V | repouso
-2000-01-01 00:09:33.281 | #   7 | bruto =  2875 | tensao = 0.145 V | repouso
-2000-01-01 00:09:33.381 | #   8 | bruto =  2755 | tensao = 0.139 V | repouso
-2000-01-01 00:09:33.482 | #   9 | bruto =  2833 | tensao = 0.143 V | repouso
-2000-01-01 00:09:33.583 | #  10 | bruto =  2542 | tensao = 0.128 V | repouso
-2000-01-01 00:09:33.683 | #  11 | bruto =  2811 | tensao = 0.142 V | repouso
-2000-01-01 00:09:33.784 | #  12 | bruto =  2765 | tensao = 0.139 V | repouso
-2000-01-01 00:09:33.885 | #  13 | bruto =  2752 | tensao = 0.139 V | repouso
-2000-01-01 00:09:33.986 | #  14 | bruto =  2663 | tensao = 0.134 V | repouso
-2000-01-01 00:09:34.087 | #  15 | bruto =  2566 | tensao = 0.129 V | repouso
-2000-01-01 00:09:34.188 | #  16 | bruto =  2642 | tensao = 0.133 V | repouso
-2000-01-01 00:09:34.289 | #  17 | bruto =  2596 | tensao = 0.131 V | repouso
-2000-01-01 00:09:34.390 | #  18 | bruto =  2696 | tensao = 0.136 V | repouso
-2000-01-01 00:09:34.490 | #  19 | bruto =  2809 | tensao = 0.141 V | repouso
-2000-01-01 00:09:34.591 | #  20 | bruto =  2739 | tensao = 0.138 V | repouso
-2000-01-01 00:09:34.692 | #  21 | bruto =  2688 | tensao = 0.135 V | repouso
-2000-01-01 00:09:34.793 | #  22 | bruto =  2777 | tensao = 0.140 V | repouso
-2000-01-01 00:09:34.894 | #  23 | bruto =  2666 | tensao = 0.134 V | repouso
-2000-01-01 00:09:34.994 | #  24 | bruto =  2648 | tensao = 0.133 V | repouso
-2000-01-01 00:09:35.095 | #  25 | bruto =  2531 | tensao = 0.127 V | repouso
-2000-01-01 00:09:35.196 | #  26 | bruto =  2562 | tensao = 0.129 V | repouso
-2000-01-01 00:09:35.297 | #  27 | bruto =  2562 | tensao = 0.129 V | repouso
-2000-01-01 00:09:35.397 | #  28 | bruto =  2767 | tensao = 0.139 V | repouso
-2000-01-01 00:09:35.498 | #  29 | bruto =  2833 | tensao = 0.143 V | repouso
-2000-01-01 00:09:35.599 | #  30 | bruto =  2697 | tensao = 0.136 V | repouso
+2000-01-01 01:33:41.314 | #   1 | bruto =  2778 | tensao = 0.140 V | repouso | UDP: enviado
+2000-01-01 01:33:41.416 | #   2 | bruto =  2730 | tensao = 0.137 V | repouso | UDP: enviado
+2000-01-01 01:33:41.517 | #   3 | bruto =  2743 | tensao = 0.138 V | repouso | UDP: enviado
+2000-01-01 01:33:41.619 | #   4 | bruto =  2604 | tensao = 0.131 V | repouso | UDP: enviado
+2000-01-01 01:33:41.721 | #   5 | bruto =  2658 | tensao = 0.134 V | repouso | UDP: enviado
+2000-01-01 01:33:41.822 | #   6 | bruto =  2760 | tensao = 0.139 V | repouso | UDP: enviado
+2000-01-01 01:33:41.923 | #   7 | bruto =  2412 | tensao = 0.121 V | repouso | UDP: enviado
+2000-01-01 01:33:42.024 | #   8 | bruto =  2630 | tensao = 0.132 V | repouso | UDP: enviado
+2000-01-01 01:33:42.125 | #   9 | bruto =  2647 | tensao = 0.133 V | repouso | UDP: enviado
+2000-01-01 01:33:42.227 | #  10 | bruto =  2769 | tensao = 0.139 V | repouso | UDP: enviado
+2000-01-01 01:33:42.329 | #  11 | bruto =  2811 | tensao = 0.142 V | repouso | UDP: enviado
+2000-01-01 01:33:42.430 | #  12 | bruto =  2826 | tensao = 0.142 V | repouso | UDP: enviado
+2000-01-01 01:33:42.532 | #  13 | bruto =  2847 | tensao = 0.143 V | repouso | UDP: enviado
+2000-01-01 01:33:42.633 | #  14 | bruto =  2752 | tensao = 0.139 V | repouso | UDP: enviado
+2000-01-01 01:33:42.734 | #  15 | bruto =  2875 | tensao = 0.145 V | repouso | UDP: enviado
+2000-01-01 01:33:42.836 | #  16 | bruto =  2350 | tensao = 0.118 V | repouso | UDP: enviado
+2000-01-01 01:33:42.937 | #  17 | bruto =  2995 | tensao = 0.151 V | repouso | UDP: enviado
+2000-01-01 01:33:43.038 | #  18 | bruto =  2995 | tensao = 0.151 V | repouso | UDP: enviado
+2000-01-01 01:33:43.140 | #  19 | bruto =  2414 | tensao = 0.122 V | repouso | UDP: enviado
+2000-01-01 01:33:43.241 | #  20 | bruto =  2472 | tensao = 0.124 V | repouso | UDP: enviado
+2000-01-01 01:33:43.343 | #  21 | bruto =  2813 | tensao = 0.142 V | repouso | UDP: enviado
+2000-01-01 01:33:43.444 | #  22 | bruto =  2676 | tensao = 0.135 V | repouso | UDP: enviado
+2000-01-01 01:33:43.545 | #  23 | bruto =  2758 | tensao = 0.139 V | repouso | UDP: enviado
+2000-01-01 01:33:43.647 | #  24 | bruto =  2562 | tensao = 0.129 V | repouso | UDP: enviado
+2000-01-01 01:33:43.748 | #  25 | bruto =  2777 | tensao = 0.140 V | repouso | UDP: enviado
+2000-01-01 01:33:43.849 | #  26 | bruto =  2702 | tensao = 0.136 V | repouso | UDP: enviado
+2000-01-01 01:33:43.950 | #  27 | bruto =  2679 | tensao = 0.135 V | repouso | UDP: enviado
+2000-01-01 01:33:44.051 | #  28 | bruto =  2995 | tensao = 0.151 V | repouso | UDP: enviado
+2000-01-01 01:33:44.153 | #  29 | bruto =  2969 | tensao = 0.150 V | repouso | UDP: enviado
+2000-01-01 01:33:44.255 | #  30 | bruto =  3073 | tensao = 0.155 V | repouso | UDP: enviado
 
 --- Resumo ---
-Leituras: 30 | com vibracao: 0 (0.0 %) | bruto minimo: 2522 | bruto maximo: 2875
+Leituras: 30 | com vibracao: 0 (0.0 %) | bruto minimo: 2350 | bruto maximo: 3073
+Pacotes UDP enviados: 30 | falhas: 0
 
 === PARTE 2: COM VIBRACAO (chacoalhando) - 50 leituras ===
 Sensor SW-420 | canal 13 | /sys/bus/iio/devices/iio:device0
 Intervalo: 100 ms | Leituras: 50
+UDP: enviando para 10.0.1.100:5005 | id = VIBRACAO_SW420
 
-2000-01-01 00:09:40.664 | #   1 | bruto =  3131 | tensao = 0.158 V | repouso
-2000-01-01 00:09:40.765 | #   2 | bruto =  2643 | tensao = 0.133 V | repouso
-2000-01-01 00:09:40.866 | #   3 | bruto =  2847 | tensao = 0.143 V | repouso
-2000-01-01 00:09:40.966 | #   4 | bruto =  2865 | tensao = 0.144 V | repouso
-2000-01-01 00:09:41.067 | #   5 | bruto =  2560 | tensao = 0.129 V | repouso
-2000-01-01 00:09:41.168 | #   6 | bruto =  2978 | tensao = 0.150 V | repouso
-2000-01-01 00:09:41.268 | #   7 | bruto =  2739 | tensao = 0.138 V | repouso
-2000-01-01 00:09:41.369 | #   8 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:41.470 | #   9 | bruto =  2583 | tensao = 0.130 V | repouso
-2000-01-01 00:09:41.570 | #  10 | bruto =  2707 | tensao = 0.136 V | repouso
-2000-01-01 00:09:41.671 | #  11 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:41.772 | #  12 | bruto =  2809 | tensao = 0.141 V | repouso
-2000-01-01 00:09:41.873 | #  13 | bruto =  2889 | tensao = 0.145 V | repouso
-2000-01-01 00:09:41.973 | #  14 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:42.074 | #  15 | bruto =  2562 | tensao = 0.129 V | repouso
-2000-01-01 00:09:42.175 | #  16 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:42.276 | #  17 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:42.377 | #  18 | bruto =  2566 | tensao = 0.129 V | repouso
-2000-01-01 00:09:42.478 | #  19 | bruto =  2611 | tensao = 0.131 V | repouso
-2000-01-01 00:09:42.579 | #  20 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:42.680 | #  21 | bruto =  2744 | tensao = 0.138 V | repouso
-2000-01-01 00:09:42.782 | #  22 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:42.883 | #  23 | bruto =  2791 | tensao = 0.141 V | repouso
-2000-01-01 00:09:42.984 | #  24 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:43.085 | #  25 | bruto =  2713 | tensao = 0.137 V | repouso
-2000-01-01 00:09:43.186 | #  26 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:43.287 | #  27 | bruto =  2510 | tensao = 0.126 V | repouso
-2000-01-01 00:09:43.389 | #  28 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:43.489 | #  29 | bruto = 60189 | tensao = 3.031 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:43.591 | #  30 | bruto =  2591 | tensao = 0.130 V | repouso
-2000-01-01 00:09:43.692 | #  31 | bruto =  2535 | tensao = 0.128 V | repouso
-2000-01-01 00:09:43.793 | #  32 | bruto =  2929 | tensao = 0.147 V | repouso
-2000-01-01 00:09:43.894 | #  33 | bruto =  2715 | tensao = 0.137 V | repouso
-2000-01-01 00:09:43.995 | #  34 | bruto =  2643 | tensao = 0.133 V | repouso
-2000-01-01 00:09:44.096 | #  35 | bruto =  3123 | tensao = 0.157 V | repouso
-2000-01-01 00:09:44.198 | #  36 | bruto =  2777 | tensao = 0.140 V | repouso
-2000-01-01 00:09:44.299 | #  37 | bruto =  2632 | tensao = 0.133 V | repouso
-2000-01-01 00:09:44.400 | #  38 | bruto =  2803 | tensao = 0.141 V | repouso
-2000-01-01 00:09:44.501 | #  39 | bruto =  2715 | tensao = 0.137 V | repouso
-2000-01-01 00:09:44.602 | #  40 | bruto = 57484 | tensao = 2.895 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:44.703 | #  41 | bruto =  2768 | tensao = 0.139 V | repouso
-2000-01-01 00:09:44.804 | #  42 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA
-2000-01-01 00:09:44.905 | #  43 | bruto =  2752 | tensao = 0.139 V | repouso
-2000-01-01 00:09:45.005 | #  44 | bruto =  3150 | tensao = 0.159 V | repouso
-2000-01-01 00:09:45.106 | #  45 | bruto =  2779 | tensao = 0.140 V | repouso
-2000-01-01 00:09:45.207 | #  46 | bruto =  2604 | tensao = 0.131 V | repouso
-2000-01-01 00:09:45.307 | #  47 | bruto =  2891 | tensao = 0.146 V | repouso
-2000-01-01 00:09:45.408 | #  48 | bruto =  2747 | tensao = 0.138 V | repouso
-2000-01-01 00:09:45.509 | #  49 | bruto =  2527 | tensao = 0.127 V | repouso
-2000-01-01 00:09:45.609 | #  50 | bruto =  3231 | tensao = 0.163 V | repouso
+2000-01-01 01:33:49.315 | #   1 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:49.417 | #   2 | bruto =  2344 | tensao = 0.118 V | repouso | UDP: enviado
+2000-01-01 01:33:49.518 | #   3 | bruto =  2498 | tensao = 0.126 V | repouso | UDP: enviado
+2000-01-01 01:33:49.620 | #   4 | bruto =  2476 | tensao = 0.125 V | repouso | UDP: enviado
+2000-01-01 01:33:49.721 | #   5 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:49.822 | #   6 | bruto =  2582 | tensao = 0.130 V | repouso | UDP: enviado
+2000-01-01 01:33:49.924 | #   7 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:50.025 | #   8 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:50.127 | #   9 | bruto =  2787 | tensao = 0.140 V | repouso | UDP: enviado
+2000-01-01 01:33:50.228 | #  10 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:50.328 | #  11 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:50.430 | #  12 | bruto =  2572 | tensao = 0.130 V | repouso | UDP: enviado
+2000-01-01 01:33:50.531 | #  13 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:50.632 | #  14 | bruto =  2816 | tensao = 0.142 V | repouso | UDP: enviado
+2000-01-01 01:33:50.733 | #  15 | bruto =  2534 | tensao = 0.128 V | repouso | UDP: enviado
+2000-01-01 01:33:50.834 | #  16 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:50.935 | #  17 | bruto =  2764 | tensao = 0.139 V | repouso | UDP: enviado
+2000-01-01 01:33:51.036 | #  18 | bruto =  2783 | tensao = 0.140 V | repouso | UDP: enviado
+2000-01-01 01:33:51.137 | #  19 | bruto =  2826 | tensao = 0.142 V | repouso | UDP: enviado
+2000-01-01 01:33:51.238 | #  20 | bruto =  2943 | tensao = 0.148 V | repouso | UDP: enviado
+2000-01-01 01:33:51.340 | #  21 | bruto =  2723 | tensao = 0.137 V | repouso | UDP: enviado
+2000-01-01 01:33:51.441 | #  22 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:51.542 | #  23 | bruto =  2816 | tensao = 0.142 V | repouso | UDP: enviado
+2000-01-01 01:33:51.643 | #  24 | bruto =  2466 | tensao = 0.124 V | repouso | UDP: enviado
+2000-01-01 01:33:51.744 | #  25 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:51.845 | #  26 | bruto =  2843 | tensao = 0.143 V | repouso | UDP: enviado
+2000-01-01 01:33:51.946 | #  27 | bruto =  2658 | tensao = 0.134 V | repouso | UDP: enviado
+2000-01-01 01:33:52.047 | #  28 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:52.148 | #  29 | bruto =  2413 | tensao = 0.122 V | repouso | UDP: enviado
+2000-01-01 01:33:52.249 | #  30 | bruto =  2953 | tensao = 0.149 V | repouso | UDP: enviado
+2000-01-01 01:33:52.350 | #  31 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:52.452 | #  32 | bruto =  2786 | tensao = 0.140 V | repouso | UDP: enviado
+2000-01-01 01:33:52.553 | #  33 | bruto =  2534 | tensao = 0.128 V | repouso | UDP: enviado
+2000-01-01 01:33:52.654 | #  34 | bruto =  2968 | tensao = 0.149 V | repouso | UDP: enviado
+2000-01-01 01:33:52.756 | #  35 | bruto =  2572 | tensao = 0.130 V | repouso | UDP: enviado
+2000-01-01 01:33:52.857 | #  36 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:52.958 | #  37 | bruto =  2893 | tensao = 0.146 V | repouso | UDP: enviado
+2000-01-01 01:33:53.060 | #  38 | bruto =  2833 | tensao = 0.143 V | repouso | UDP: enviado
+2000-01-01 01:33:53.161 | #  39 | bruto =  2675 | tensao = 0.135 V | repouso | UDP: enviado
+2000-01-01 01:33:53.263 | #  40 | bruto =  2968 | tensao = 0.149 V | repouso | UDP: enviado
+2000-01-01 01:33:53.364 | #  41 | bruto =  2824 | tensao = 0.142 V | repouso | UDP: enviado
+2000-01-01 01:33:53.466 | #  42 | bruto =  2739 | tensao = 0.138 V | repouso | UDP: enviado
+2000-01-01 01:33:53.567 | #  43 | bruto =  2956 | tensao = 0.149 V | repouso | UDP: enviado
+2000-01-01 01:33:53.668 | #  44 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:53.770 | #  45 | bruto =  2510 | tensao = 0.126 V | repouso | UDP: enviado
+2000-01-01 01:33:53.871 | #  46 | bruto =  2626 | tensao = 0.132 V | repouso | UDP: enviado
+2000-01-01 01:33:53.973 | #  47 | bruto =  2875 | tensao = 0.145 V | repouso | UDP: enviado
+2000-01-01 01:33:54.074 | #  48 | bruto = 65535 | tensao = 3.300 V | VIBRANDO  <<< ALERTA | UDP: enviado
+2000-01-01 01:33:54.175 | #  49 | bruto =  2402 | tensao = 0.121 V | repouso | UDP: enviado
+2000-01-01 01:33:54.277 | #  50 | bruto =  3596 | tensao = 0.181 V | repouso | UDP: enviado
 
 --- Resumo ---
-Leituras: 50 | com vibracao: 13 (26.0 %) | bruto minimo: 2510 | bruto maximo: 65535
+Leituras: 50 | com vibracao: 15 (30.0 %) | bruto minimo: 2344 | bruto maximo: 65535
+Pacotes UDP enviados: 50 | falhas: 0

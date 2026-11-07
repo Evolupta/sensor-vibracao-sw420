@@ -53,7 +53,7 @@ private:
 public:
     /**
      * @brief Constrói o sensor.
-     * @param canal Número X do canal ADC (arquivo in_voltageX_raw, padrão 6 no código; usar 13 na montagem validada).
+     * @param canal Número X do canal ADC (arquivo in_voltageX_raw, padrão 6 no pino A4).
      * @param caminhoIio Diretório IIO. O padrão é o do kit STM32MP1.
      * @param nivelAtivoAlto true se a saída do módulo vai a nível alto ao
      *        detectar vibração; false se vai a nível baixo.
