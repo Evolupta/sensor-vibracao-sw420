@@ -1,0 +1,29 @@
+========================================================================
+RELATORIO DE MONITORAMENTO INTELIGENTE DE CARGA - SENSOR SW-420
+Projeto de Programacao Aplicada 2026 - IME
+Integrantes: Ferraiollo, Brasil Barreto, Oppelt
+========================================================================
+Inicio da sessao : 2026-11-13 10:31:50
+Fim / geracao    : 2026-11-13 10:32:42
+Limiar de alerta : 1.65 V
+Arquivo CSV log  : C:\Users\erika\Downloads\Entrega4_SW420_REVISADA\Entrega4_SW420_REVISADA\log_sensor_20261113_103150.csv
+------------------------------------------------------------------------
+RESUMO ESTATISTICO:
+  Pacotes validos recebidos : 80
+  Amostras com vibracao     : 7 (8.8 %)
+  Pacotes perdidos (UDP)    : 0
+  Pacotes fora de ordem     : 0
+  Pacotes invalidos         : 0
+  Tensao minima medida      : 0.102 V
+  Tensao media medida       : 0.409 V
+  Tensao maxima medida      : 3.300 V
+------------------------------------------------------------------------
+ULTIMOS EVENTOS DE ALERTA REGISTRADOS (max 20):
+  - 10:32:07.107 | VIBRACAO_SW420 #50 | 3.300 V (bruto=65535) | limiar=1.65 V
+  - 10:32:07.011 | VIBRACAO_SW420 #49 | 3.300 V (bruto=65535) | limiar=1.65 V
+  - 10:32:06.456 | VIBRACAO_SW420 #44 | 3.300 V (bruto=65535) | limiar=1.65 V
+  - 10:32:06.076 | VIBRACAO_SW420 #40 | 3.300 V (bruto=65535) | limiar=1.65 V
+  - 10:32:05.981 | VIBRACAO_SW420 #39 | 3.300 V (bruto=65535) | limiar=1.65 V
+  - 10:32:05.311 | VIBRACAO_SW420 #32 | 3.300 V (bruto=65535) | limiar=1.65 V
+  - 10:32:05.215 | VIBRACAO_SW420 #31 | 3.300 V (bruto=65535) | limiar=1.65 V
+========================================================================

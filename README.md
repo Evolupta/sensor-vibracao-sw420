@@ -1,101 +1,83 @@
 # Sensor de Vibração SW-420 — Monitoramento Inteligente de Carga
 
 Projeto de Programação Aplicada 2026 (IME) — grupo do **Sensor de Vibração (SW-420, digital)**.
-Integrantes: Ferraiollo, Brasil Barreto, Oppelt.
+Integrantes: **Ferraiollo**, **Brasil Barreto**, **Oppelt**.
 
 ## Descrição geral
 
-O sistema monitora a integridade de uma carga sensível. Este módulo é responsável
-pelo sensor de vibração **SW-420**, que detecta movimentações, impactos ou
-transporte indevido. Ele roda no kit **STM32MP1-DK1** (Linux embarcado), lê o sensor
-continuamente e **envia cada leitura por UDP** a um servidor central na rede local.
+O sistema monitora em tempo real a integridade de uma carga sensível durante o transporte.
+Este módulo é responsável pelo sensor de vibração **SW-420**, que detecta movimentações,
+impactos ou tentativas de violação. O software embarcado roda em espaço de usuário Linux no kit
+**STM32MP1-DK1**, lê continuamente o sensor via subsistema IIO/ADC e transmite cada leitura via
+**socket UDP** para o servidor central no PC, onde uma **Interface Gráfica de Monitoramento**
+exibe o valor instantâneo, o gráfico temporal deslizante (30–60 s), alertas visuais de violação
+e grava logs CSV e relatórios estatísticos.
 
-**Estado atual: Entrega 3** — envio das leituras via UDP + documentação do protocolo.
-A interface gráfica de monitoramento no servidor será a Entrega 4.
+**Entrega 4 validada em bancada em 13/11/2026** — Interface Gráfica de Monitoramento no PC (`interface_grafica.py`),
+integrada ao transmissor embarcado C++ (`SensorVibracao`, `MonitorSensor`, `EmissorUdp`).
+Foram registrados **dois ensaios reais de 80 pacotes UDP** recebidos pelo PC, sem perdas ou pacotes inválidos nos arquivos dessas sessões.
 
 ```mermaid
 flowchart LR
-    A["SW-420<br/>(saída digital)"] -->|"fio de sinal"| B["ADC do kit<br/>in_voltage13_raw (ensaio)"]
-    B -->|"sysfs / IIO"| C["SensorVibracao<br/>lerAmostra()"]
-    C --> D["MonitorSensor<br/>laço a cada N ms"]
-    D -->|"console"| E["Terminal do kit"]
-    D -->|"CSV"| F["EmissorUdp<br/>sendto()"]
-    F -->|"UDP porta 5005<br/>Ethernet"| G["Servidor no PC<br/>servidor_udp.py"]
-    G --> H["Console + log CSV<br/>(GUI: Entrega 4)"]
+    A["SW-420<br/>(comparador LM393)"] -->|"pino DO -> ADC"| B["ADC 16 bits<br/>in_voltage13_raw (ensaio)"]
+    B -->|"sysfs IIO"| C["SensorVibracao<br/>lerAmostra()"]
+    C --> D["MonitorSensor<br/>laço em tempo real"]
+    D -->|"CSV (7 campos)"| E["EmissorUdp<br/>sendto()"]
+    E -->|"UDP :5005<br/>Rede Local"| F["ReceptorUdpAssincrono<br/>(Thread Python)"]
+    F --> G["GerenciadorHistorico<br/>CSV + Estatísticas"]
+    G --> H["InterfaceMonitoramento<br/>(Tkinter GUI: Gráfico 30-60s + Alertas)"]
 ```
 
-## Como o sensor é lido
+---
 
-O SW-420 tem saída digital (comparador LM393), mas no kit o pino de sinal é ligado a
-uma **entrada do ADC**. A leitura é feita pelo subsistema IIO do Linux:
+## Como o sensor é lido e analisado
 
-```
-/sys/bus/iio/devices/iio:device0/in_voltageX_raw
-```
+O módulo SW-420 possui saída digital baseada no comparador LM393, ligada a uma entrada ADC do kit
+STM32MP1-DK1. No ensaio físico da Entrega 3, o sinal do SW-420 foi lido em `/sys/bus/iio/devices/iio:device0/in_voltage13_raw`. O mapeamento físico deve ser conferido no kit antes de reproduzir a ligação.
+A classe `SensorVibracao` converte a leitura bruta de 16 bits (`0..65535`) em tensão:
 
-A classe converte o valor bruto em volts (`bruto * 3,3 / 65535`) e considera
-**nível alto** (vibração) quando a tensão é maior ou igual a 1,65 V.
+$$\text{Tensão (V)} = \frac{\text{bruto} \times 3{,}3}{65535}$$
 
-Ligação (3,3 V, **nunca 5 V**): VCC → 3V3 · GND → GND · Sinal → pino do ADC.
+| Parâmetro / Estado | Valor Medido / Configurado | Interpretação Física |
+|---|---|---|
+| Resolução e Referência do ADC | 16 bits (`0..65535`), $V_{\text{ref}} = 3{,}3\text{ V}$ | $\approx 50{,}35\ \mu\text{V}$ por nível LSB |
+| Canal ADC principal | Canal **13** (`in_voltage13_raw`) utilizado na validação física anterior | O canal depende da ligação e da configuração IIO da placa |
+| Estado de Repouso (carga íntegra) | $\text{bruto} \approx 2450\text{ a }3150$ ($\approx 0{,}12\text{ V a }0{,}16\text{ V}$) | Saída do comparador LM393 saturada em nível baixo ($V_{OL}$) |
+| Estado de Vibração (alerta) | $\text{bruto} \ge 32768$ ($\ge 1{,}65\text{ V}$; no ensaio houve amostras a $3{,}300\text{ V}$) | Pulso de nível alto indicando impacto ou movimentação |
 
-**Parâmetros usados no ensaio no kit** (Buildroot, Linux 6.9.8 armv7l). O mapeamento exato do canal IIO para a identificação do conector físico não foi comprovado neste log:
-
-| Item | Valor |
-|---|---|
-| Resolução do ADC | 16 bits (`0..65535`) |
-| Referência | 3,3 V |
-| Canal da montagem validada | **13** (`in_voltage13_raw`); correspondência com o pino físico deve ser conferida na placa |
-| Repouso no ensaio de 07/11/2026 | **0,118 a 0,155 V** no canal 13; sem alertas |
+---
 
 ## Protocolo de comunicação (UDP)
 
-- **Transporte:** UDP, sem conexão. **Kit → servidor**, um datagrama por leitura.
-- **Servidor:** IP do PC na rede do kit (ensaio real: `10.0.1.100`), **porta `5005`** (configurável).
-- **Frequência:** a cada `intervalo_ms` (padrão **100 ms** = 10 pacotes/s).
-- **Formato:** texto UTF-8, **CSV com 7 campos separados por vírgula**, sem quebra de linha final
-  e com no máximo ~60 bytes.
+Cada leitura gera um datagrama UDP em texto UTF-8 no formato **CSV de 7 campos** (porta padrão `5005`):
 
-```
+```text
 id_sensor,sequencia,timestamp_ms,valor,unidade,vibracao,bruto
 ```
 
-| # | Campo | Tipo | Descrição | Exemplo |
-|---|---|---|---|---|
-| 1 | `id_sensor` | texto (sem vírgula) | Identifica o sensor/grupo | `VIBRACAO_SW420` |
-| 2 | `sequencia` | inteiro ≥ 1 | Contador de pacotes; permite detectar perda e reinício | `12` |
-| 3 | `timestamp_ms` | inteiro | Instante da leitura: ms desde 01/01/1970 UTC | `1762345678123` |
-| 4 | `valor` | decimal (3 casas) | Tensão no pino do sensor | `2.618` |
-| 5 | `unidade` | texto | Unidade do `valor` (sempre `V`) | `V` |
-| 6 | `vibracao` | `0` ou `1` | `1` = vibração detectada (nível alto), `0` = repouso | `1` |
-| 7 | `bruto` | inteiro 0..65535 | Valor bruto do ADC (16 bits) | `52000` |
-
-**Exemplos de mensagens**
-
+**Exemplos de pacotes do protocolo (dados de demonstração):**
 ```text
-VIBRACAO_SW420,1,1793878057829,0.201,V,0,4000      <- repouso
-VIBRACAO_SW420,2,1793878058038,2.618,V,1,52000     <- vibração
+VIBRACAO_SW420,1,1794351651959,0.134,V,0,2660      <- sensor em repouso (normal)
+VIBRACAO_SW420,2,1794351652662,2.729,V,1,54200     <- vibracao detectada (alerta)
 ```
 
-**Regras do receptor**
-- Mensagem com número de campos diferente de 7, ou campo numérico inválido, deve ser descartada
-  (o `servidor_udp.py` conta como "inválido").
-- `sequencia` maior que a anterior + 1 → houve **perda** de pacotes (UDP não garante entrega);
-  `sequencia` voltando a `1` → o emissor foi **reiniciado**; menor que a anterior → **fora de ordem**.
-- Os campos `valor`, `unidade` e `timestamp_ms` permitem integrar vários sensores no servidor final,
-  pois cada grupo envia o mesmo padrão com seu próprio `id_sensor`.
+---
 
-## Estrutura do código
+## Estrutura do código e Diagrama de Classes
 
 | Arquivo | Conteúdo |
 |---|---|
-| `src/SensorVibracao.h/.cpp` | Leitura e interpretação do sensor (ADC → volts → estado) |
-| `src/EmissorUdp.h/.cpp` | Socket UDP: cria o socket, envia datagramas, fecha no destrutor |
-| `src/MonitorSensor.h/.cpp` | Laço de leitura; monta a mensagem do protocolo e a envia pelo `EmissorUdp` |
-| `src/main.cpp` | Apenas instancia as classes e as executa |
-| `servidor_udp.py` | Servidor de teste no PC: recebe, valida, detecta perdas e grava log CSV |
-| `Doxyfile` / `Makefile` | Documentação e compilação (nativa e cruzada) |
-| `compilar_arm.sh` | Compila (nativo + ARM) e testa o UDP na VM Ubuntu |
-| `teste_no_kit.sh` | Roda no kit: teste em repouso e vibrando, enviando ao servidor |
+| `src/SensorVibracao.h/.cpp` | Classe C++ de leitura e conversão do ADC IIO (`lerBruto`, `lerAmostra`, `lerTensao`, `vibracaoDetectada`, `medirIntensidade`) |
+| `src/EmissorUdp.h/.cpp` | Classe C++ que encapsula o socket UDP (RAII) compatível com Linux e Windows |
+| `src/MonitorSensor.h/.cpp` | Classe C++ que executa o laço periódico, formata o pacote CSV e transmite via `EmissorUdp` |
+| `src/main.cpp` | Programa principal embarcado (apenas instancia as classes e executa) |
+| `interface_grafica.py` | **Interface Gráfica (Entrega 4)** em Python/Tkinter 100% Orientada a Objetos |
+| `servidor_udp.py` | Servidor UDP em modo texto (console) para diagnóstico rápido |
+| `teste_sensor_arm` | Executável ARM (`ELF 32-bit LSB pie executable, ARM, EABI5`) compilado para o kit |
+| `teste_no_kit.sh` | Script de bancada para rodar no kit (30 leituras em repouso + 50 sob vibração) |
+| `INSTRUCOES_TESTE_KIT.md` | Guia passo a passo para execução na bancada com o kit físico |
+
+### Diagrama de Classes — Embarcado (C++) e Servidor Gráfico (Python)
 
 ```mermaid
 classDiagram
@@ -110,8 +92,6 @@ classDiagram
         +lerTensao(double&) bool
         +vibracaoDetectada(bool&) bool
         +medirIntensidade(amostras, intervaloMs, double&) bool
-        +getCanal() int
-        +getCaminhoIio() string
     }
     class EmissorUdp {
         -int descritor
@@ -119,12 +99,8 @@ classDiagram
         -bool pronto
         -string ip
         -int porta
-        +EmissorUdp(ip, porta)
-        +~EmissorUdp()
         +estaPronto() bool
         +enviar(string) bool
-        +getIp() string
-        +getPorta() int
     }
     class MonitorSensor {
         -SensorVibracao& sensor
@@ -132,184 +108,166 @@ classDiagram
         -int intervaloMs
         -int totalLeituras
         -string idSensor
-        -timestampMs() long long
-        -formatarHora(long long) string
-        -montarMensagem(...) string
         +executar(ostream&) int
     }
+    class AmostraSensor {
+        +string id_sensor
+        +int sequencia
+        +int timestamp_ms
+        +float valor
+        +string unidade
+        +int vibracao
+        +int bruto
+        +string ip_origem
+        +de_csv(texto, ip)$ AmostraSensor
+        +linha_csv() list
+    }
+    class GerenciadorHistorico {
+        +deque amostras
+        +deque eventos_alerta
+        +int total_validos
+        +int total_com_alerta
+        +int total_perdidos
+        +registrar_amostra(amostra, limiar) bool
+        +exportar_csv(destino)
+        +salvar_relatorio(limiar, destino) string
+    }
+    class ReceptorUdpAssincrono {
+        -int porta
+        -Queue fila
+        +iniciar()
+        +parar()
+    }
+    class InterfaceMonitoramento {
+        -float limiar_alerta
+        -int janela_segundos
+        +alternar_simulacao()
+        +salvar_csv_manual()
+        +exportar_relatorio_manual()
+        +capturar_print_manual()
+        +executar() int
+    }
     MonitorSensor --> SensorVibracao : lê
-    MonitorSensor --> EmissorUdp : envia
+    MonitorSensor --> EmissorUdp : transmite UDP
+    EmissorUdp ..> ReceptorUdpAssincrono : datagrama CSV :5005
+    InterfaceMonitoramento --> ReceptorUdpAssincrono : consome fila
+    InterfaceMonitoramento --> GerenciadorHistorico : registra
+    GerenciadorHistorico --> AmostraSensor : armazena
 ```
 
-Todos os métodos de leitura/envio retornam `bool` e só alteram os parâmetros de saída em caso
-de sucesso. O código não usa variáveis globais nem funções fora de classes (exceto `main`).
+---
 
-## Dependências
+## Funcionalidades da Interface Gráfica (`interface_grafica.py`)
 
-- Compilador C++11 (`g++`) e `make`.
-- Doxygen (opcional, para gerar a documentação).
-- Python 3 (apenas para o `servidor_udp.py` no PC; só biblioteca padrão).
-- Para o kit: toolchain `arm-buildroot-linux-gnueabihf` fornecida pelo professor
-  (`arm-buildroot-linux-gnueabihf_sdk-DK2.tar.gz`).
+### Requisitos Obrigatórios Atendidos
+1. **Valor atual do sensor em tempo real:** cartões superiores exibindo Tensão (`V`), Valor Bruto do ADC (`0..65535`) com número de sequência, Estado (`REPOUSO (NORMAL)` ou `VIBRANDO <<< ALERTA`) e contadores de pacotes válidos, alertas e perdas.
+2. **Histórico gráfico temporal (últimos 30–60 segundos):** gráfico deslizante desenhado em `tkinter.Canvas` mostrando a curva de tensão de `0,00 V` a `3,30 V`, a linha tracejada do limiar de alerta, pontos vermelhos nas amostras anômalas e uma faixa inferior de pulsos digitais.
+3. **Alerta visual imediato para valores fora dos limites:** o banner superior muda instantaneamente de **Verde (`CARGA ÍNTEGRA — SENSOR EM REPOUSO`)** para **Vermelho (`ALERTA DE VIOLAÇÃO: VIBRAÇÃO DETECTADA!`)** quando a tensão atinge ou supera o limiar configurado, adicionando o evento com horário exato à lista de alertas.
+4. **Salvamento dos dados em arquivo de log CSV:** gravação contínua automática em `log_sensor.csv` (com caixa de seleção para ativar/pausar) + botão **"Salvar Histórico (CSV)..."** para exportar a qualquer momento.
 
-## Compilação e execução
+### Requisitos Recomendados (Bônus) Implementados
+- **Configuração dinâmica de limites de alerta:** controle deslizante (*Scale*) que ajusta em tempo real o limiar de tensão (`0,20 V` a `3,10 V`, padrão `1,65 V`), reposicionando imediatamente a linha de limiar no gráfico, além de seletor de janela temporal (`30 s` ou `60 s`).
+- **Exportação automática e manual de relatórios:** botão **"Exportar Relatório (.txt)"** e salvamento automático ao fechar a janela em `relatorio_monitoramento.txt`, com estatísticas completas (mínimo, média, máximo, % de vibração, perdas UDP e lista de incidentes).
+- **Registro de timestamp:** exibe e registra tanto o `timestamp_ms` gerado pelo kit STM32MP1-DK1 quanto o horário exato de recepção no servidor.
+- **Indicador temporal da última atualização recebida:** exibe no topo `"Última atualização: HH:MM:SS.mmm (há X.X s)"` e muda para aviso amarelo (`SEM SINAL há X.X s`) caso o kit fique mais de 3 segundos sem transmitir.
 
-### 1) Compilar para o kit (na VM Ubuntu)
+---
+
+## Instruções de Compilação e Execução
+
+### 1. Executar a Interface Gráfica no PC
+Não há dependências externas (usa apenas bibliotecas nativas do Python 3 + `tkinter`):
 
 ```bash
-cd SensorVibracao
+# Modo normal (aguardando pacotes UDP do kit na porta 5005):
+python interface_grafica.py
+
+# Modo demonstracao (com simulador local integrado enviando pacotes UDP):
+python interface_grafica.py --demo
+```
+
+### 2. Compilar e Executar no Kit STM32MP1-DK1
+Na VM Ubuntu (caso deseje recompilar o binário ARM):
+```bash
 make clean
 make CXX=$HOME/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/arm-buildroot-linux-gnueabihf-g++
-file build/teste_sensor        # deve indicar: ELF 32-bit LSB ... ARM, EABI5
+```
+Para enviar o binário ARM, utilize o **IP real** do kit e o **IP real** do computador na mesma rede. O ensaio físico da Entrega 3 usou kit `10.0.1.101` e PC `10.0.1.100`; confirme-os novamente antes de executar:
+```bash
+scp teste_sensor_arm root@IP_DO_KIT:/home/root/teste_sensor
+scp teste_no_kit.sh root@IP_DO_KIT:/home/root/
+ssh root@IP_DO_KIT
+# No terminal do kit:
+chmod +x /home/root/teste_sensor
+/home/root/teste_sensor 13 100 0 IP_DO_PC 5005
 ```
 
-Atalho: `bash compilar_arm.sh` (compila nativo, testa o UDP em loopback e compila para ARM).
+---
 
-### 2) Rede utilizada no ensaio físico (07/11/2026)
+## Validação física da interface gráfica — 13/11/2026
 
-A placa STM32MP1-DK1 foi ligada à porta LAN de um roteador por **Ethernet (eth0)**;
-o computador servidor Windows utilizou **Wi-Fi da mesma rede local**. Não foi necessário
-que o computador tivesse uma porta Ethernet.
+A Entrega 4 foi executada **sem `--demo`**, com a GUI recebendo mensagens UDP no computador a partir do IP do STM32 `10.0.1.101`. Foram preservados dois CSVs e dois relatórios independentes gerados pela interface durante as sessões reais. O limiar utilizado foi **1,65 V**, com 30 leituras em repouso, pausa programada de aproximadamente 5 segundos e 50 leituras com movimentação em cada ensaio.
 
-| Equipamento | Endereço no ensaio |
-|---|---|
-| Kit STM32MP1 (origem dos pacotes) | `10.0.1.101` |
-| PC Windows (servidor) | `10.0.1.100` |
-| Transporte | UDP, porta `5005` |
-| Canal IIO testado | `13` (`in_voltage13_raw`) |
+| Métrica | Ensaio 1 (10h26) | Ensaio 2 (10h31) |
+|---|---:|---:|
+| Origem observada | `10.0.1.101` | `10.0.1.101` |
+| Leituras registradas pelo PC | **80/80** | **80/80** |
+| Alertas em repouso (30 leituras) | **0/30** | **0/30** |
+| Alertas durante movimentação (50 leituras) | **15/50 (30%)** | **7/50 (14%)** |
+| Pacotes perdidos / inválidos / fora de ordem | **0 / 0 / 0** | **0 / 0 / 0** |
+| Tensão mínima / média / máxima | **0,115 / 0,729 / 3,300 V** | **0,102 / 0,409 / 3,300 V** |
+| Pausa observada entre as fases | **5,10 s** | **5,05 s** |
 
-Esses são **IPs do ensaio**, não endereços fixos universais. Em outra rede, descubra
-os endereços atuais com `ip addr show eth0` no kit e `ipconfig` no computador.
+Os dados foram conferidos com `verificar_gui_entrega4.py`, incluindo identificação, IP de origem, sequência `1..30` e `1..50`, correspondência bruto–tensão e coerência de alerta. O teste automatizado local também exercitou a GUI com datagramas UDP em loopback, verificando recepção, alerta, tratamento de pacote inválido, exportação e proteção dos arquivos existentes.
 
-No ensaio registrado, o `ping` executado pelo kit teve 2/2 respostas ausentes, **mas**
-o servidor recebeu comprovadamente os 80 datagramas UDP. Falha de ICMP, isoladamente,
-não invalida a comunicação UDP; a causa do bloqueio do ping não foi identificada.
-O Windows deve permitir o recebimento UDP na porta 5005 (regra de firewall, se necessário).
+**Interpretação das porcentagens:** 15/50 e 7/50 medem a proporção de amostras que captaram pulsos de vibração, e **não** representam taxa de acerto nem eficiência do sensor. Como a saída do SW-420 é digital e os pulsos podem ser breves, não se exige que todas as amostras de uma janela com movimento tenham nível alto.
 
-### 3) Iniciar o servidor no PC
+**Aviso “SEM SINAL”:** na captura abaixo a interface mostra 30 pacotes e o aviso “última leitura há 4,0 s”. Isso ocorreu durante a **pausa programada entre as duas fases**. A GUI detecta ausência de novos pacotes após 3 segundos, mas o protocolo atual não informa a fase do ensaio; portanto, a GUI **não distingue automaticamente** pausa prevista de uma interrupção imprevista da transmissão. No mesmo ensaio, a recepção foi retomada e o CSV final registrou os 80 pacotes.
 
-No PowerShell, na pasta que contém `servidor_udp.py`:
+**Relógio do kit:** os timestamps gerados no STM32 estão desajustados em relação à data civil do ensaio. Para identificar os horários das sessões, foram utilizados os campos `recebido_em` do computador. Não se deve usar os timestamps do dispositivo como prova de sincronização horária.
+
+### Evidências da execução física
+
+**Captura real da interface durante a pausa da segunda sessão (30 pacotes já recebidos):**
+
+![Interface gráfica conectada ao kit, em pausa entre etapas](evidencia_interface_kit.png)
+
+**Gráfico reconstituído a partir dos dois arquivos CSV físicos (não é uma captura da GUI ao vivo):**
+
+![Tensão registrada nos dois ensaios físicos](grafico_ensaios_fisicos.png)
+
+Arquivos das sessões:
+
+- **Ensaio 1:** [`log_sensor_20261113_102602.csv`](log_sensor_20261113_102602.csv) e [`relatorio_monitoramento_20261113_102602.txt`](relatorio_monitoramento_20261113_102602.txt).
+- **Ensaio 2:** [`log_sensor_20261113_103150.csv`](log_sensor_20261113_103150.csv) e [`relatorio_monitoramento_20261113_103150.txt`](relatorio_monitoramento_20261113_103150.txt).
+- **Relatório de validação:** [`VALIDACAO_ENTREGA4.md`](VALIDACAO_ENTREGA4.md).
+- **Compilação ARM:** [`evidencia_compilacao_vm.png`](evidencia_compilacao_vm.png) e [`resultado_compilacao_arm.txt`](resultado_compilacao_arm.txt), mantidos das entregas anteriores.
+
+### Reprodução e diagnósticos
+
+No PC com Python 3 e Tkinter, abra a GUI para receber os datagramas da rede local:
 
 ```powershell
-python -u servidor_udp.py --porta 5005 --log log_sensor.csv --max 80
+python interface_grafica.py --porta 5005 --log log_sensor.csv --relatorio relatorio_monitoramento.txt
 ```
 
-O servidor recebe, valida e registra as mensagens. Para execução contínua, omita `--max 80`
-e interrompa com `Ctrl+C`.
-
-### 4) Transferir e executar no kit
-
-Após descobrir os IPs reais na mesma rede, por exemplo os utilizados no ensaio:
+Para conferir os dois ensaios preservados neste repositório:
 
 ```powershell
-scp -O .\teste_sensor_arm root@10.0.1.101:/home/root/teste_sensor
-scp -O .\teste_no_kit.sh root@10.0.1.101:/home/root/teste_no_kit.sh
+python verificar_gui_entrega4.py log_sensor_20261113_102602.csv --ip-kit 10.0.1.101
+python verificar_gui_entrega4.py log_sensor_20261113_103150.csv --ip-kit 10.0.1.101
 ```
 
-No Tera Term (porta serial Micro-USB) ou terminal SSH do kit:
-
-```sh
-mkdir -p /home/root
-cd /home/root
-chmod +x teste_sensor
-sh teste_no_kit.sh 10.0.1.100 13 5005
-```
-
-O teste de bancada realiza 30 leituras em repouso e, após contagem regressiva,
-50 leituras com movimentação do módulo. A cada 100 ms é enviado um datagrama.
-O script salva sua saída em `/home/root/resultado_teste_kit.txt`.
-
-Para o monitoramento contínuo, sem limitar as leituras:
-
-```sh
-./teste_sensor 13 100 0 10.0.1.100 5005
-```
-
-Os exemplos usam **13 explicitamente** porque foi o canal validado. O executável de
-referência mantém `6` como valor padrão quando o argumento é omitido; não confunda
-esse padrão com o canal da montagem efetivamente ensaiada.
-
-```text
-./teste_sensor [canal] [intervalo_ms] [leituras] [ip_servidor] [porta] [id_sensor] [caminho_iio]
-```
-
-| Argumento | Significado | Padrão no executável |
-|---|---|---|
-| `canal` | X de `in_voltageX_raw` | `6` (ensaio: `13`) |
-| `intervalo_ms` | pausa entre leituras | `100` |
-| `leituras` | quantidade; `0` = contínuo até `Ctrl+C` | `0` |
-| `ip_servidor` | IPv4 do servidor; omitido = UDP desativado | — |
-| `porta` | porta UDP do servidor | `5005` |
-| `id_sensor` | identificador no protocolo | `VIBRACAO_SW420` |
-| `caminho_iio` | diretório IIO | `/sys/bus/iio/devices/iio:device0` |
-
-**Teste sem o kit** (PC com IIO simulado, enviando para si mesmo):
+O teste automatizado local pode ser executado em um ambiente gráfico isolado, com porta UDP livre:
 
 ```bash
-mkdir -p /tmp/iio_sim && echo 52000 > /tmp/iio_sim/in_voltage6_raw
-python3 servidor_udp.py --max 8 &
-make && ./build/teste_sensor 6 50 4 127.0.0.1 5005 VIBRACAO_SW420 /tmp/iio_sim
+python teste_gui_local.py
 ```
 
-**Documentação do código:** `make doc` (gera `doc/html/index.html`).
+O simulador (`--demo`) **não foi utilizado como evidência física**. Ele continua disponível apenas para diagnóstico e demonstração. As imagens de simulação da pasta de trabalho original não são apresentadas como registro do kit.
 
-## Validação e evidências
+### Limites do registro
 
-### Resultado da comunicação física kit → PC em 07/11/2026
+O material recebido inclui uma captura verdadeira da GUI mostrando a primeira fase e os relatórios/CSVs finais das duas sessões, incluindo os alertas da fase de movimento. **Não foi fornecida uma captura feita diretamente no momento do banner vermelho**, nem um log contemporâneo do console do STM32 para as sessões de 13/11. O histórico da Entrega 3 já documenta o programa embarcado e sua transmissão física. Se o professor exigir especificamente uma foto do alerta ao vivo ou a fotografia do circuito com o kit desligado, essas evidências precisarão ser anexadas separadamente — não foram fabricadas a partir dos CSVs.
 
-| Critério | Resultado observado |
-|---|---:|
-| Ambiente embarcado | Linux 6.9.8 `armv7l` |
-| Canal IIO | 13 |
-| Amostras em repouso | **30** |
-| Alertas em repouso | **0** |
-| Amostras com movimentação | **50** |
-| Alertas com movimentação | **15 (30%)** |
-| Datagramas UDP transmitidos sem falha reportada no kit | **80** |
-| Datagramas UDP recebidos válidos no servidor | **80** |
-| Datagramas inválidos / perdidos / fora de ordem | **0 / 0 / 0** |
-| Identificador do protocolo | `VIBRACAO_SW420` |
-| Servidor | `10.0.1.100:5005` |
-| Origem observada pelo servidor | `10.0.1.101` |
-
-**Verificação cruzada:** as 80 linhas do `resultado_teste_kit.txt` foram comparadas,
-na mesma ordem, com as 80 linhas de `log_sensor.csv`. Sequência, valor ADC bruto,
-tensão (3 casas decimais) e indicador de vibração correspondem nas 80 amostras,
-sem divergências. O verificador `verificar_udp_entrega3.py` também aprovou a
-consistência do CSV.
-
-A numeração reinicia em `1` após o teste de 30 amostras, porque o script inicia
-uma nova execução do emissor para as 50 amostras seguintes. O servidor identificou
-o reinício e não o classificou como perda de pacote.
-
-**Limites das evidências:** o kit estava com o relógio no ano **2000**, sem
-sincronização. O timestamp emitido não é evidência da hora civil correta;
-`recebido_em` é registrado no computador receptor. A porcentagem de detecção
-é a fração de amostras de nível alto, não a sensibilidade metrológica do módulo
-nem uma taxa de acerto por evento físico independente.
-
-Arquivos verificáveis do ensaio físico:
-
-- [`resultado_teste_kit.txt`](resultado_teste_kit.txt): leitura e envio de 80 amostras na placa.
-- [`log_sensor.csv`](log_sensor.csv): registros efetivamente recebidos pelo PC.
-- [`log_servidor_console.txt`](log_servidor_console.txt): saída do servidor, incluindo os totais finais (texto convertido de UTF-16 para UTF-8, sem alterações de conteúdo).
-- [`verificar_udp_entrega3.py`](verificar_udp_entrega3.py): verificador independente do CSV (executar com `python verificar_udp_entrega3.py`).
-- [`RELATORIO_VALIDACAO_ENTREGA3.md`](RELATORIO_VALIDACAO_ENTREGA3.md): conferência entre kit, CSV, servidor e código.
-
-### Testes de desenvolvimento
-
-1. **UDP em loopback no Windows, IIO simulado:** houve testes de repouso,
-   vibração, sequência perdida simulada, reinício e mensagem inválida.
-   Evidência: [`resultado_teste_udp_pc.txt`](resultado_teste_udp_pc.txt).
-2. **VM Ubuntu e compilação cruzada ARM:** teste UDP local com 8 pacotes válidos
-   e compilação ARM usando toolchain do professor; evidências em
-   [`resultado_compilacao_arm.txt`](resultado_compilacao_arm.txt) e na imagem abaixo.
-
-![Compilação cruzada e teste em VM Ubuntu](evidencia_compilacao_vm.png)
-
-### Documentação e etapas posteriores
-
-- `make doc` gera a documentação Doxygen (`doc/html/index.html`).
-- A **interface gráfica** e a integração de todos os sensores pertencem às etapas posteriores, não à Entrega 3.
-- A **fotografia da ligação física do sensor com o kit desligado**, exigida nas instruções gerais do projeto, deve ser anexada separadamente caso ainda não tenha sido entregue.
-- O teste físico mostrou detecção funcional, mas não constitui certificação de confiabilidade para todos os ambientes de uso.
+A Entrega 4 solicita uma interface funcional (valor, gráfico, alerta e histórico salvo), e esses recursos foram exercitados com mensagens do kit e evidenciados pelos registros aqui incluídos. O projeto mantém a interface gráfica e o receptor em modo texto separados: não executar `servidor_udp.py` na mesma porta 5005 simultaneamente à GUI.

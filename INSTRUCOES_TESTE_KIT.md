@@ -1,72 +1,65 @@
-# Instruções de teste no kit STM32MP1-DK1 — Entrega 3 (SW-420)
+> **Validação da Entrega 4 já realizada em 13/11/2026:** dois ensaios de 80 registros, arquivados no README e em `VALIDACAO_ENTREGA4.md`. Repetir os passos abaixo somente se for necessária uma nova evidência; não é obrigatório repetir apenas para publicar o código.
 
-## Montagem e segurança
+# Entrega 4 — Validação física da interface SW-420 (STM32MP1-DK1)
 
-Antes de energizar, fotografe as conexões. Alimente o SW-420 somente com **3,3 V**
-(VCC → 3V3; GND → GND; DO → entrada do ADC). Mantenha o cartão SD no kit.
-O ensaio documentado usou **canal IIO 13**. Confirme qual pino físico da montagem
-corresponde a esse canal; não pressuponha o mapeamento A4/A5 sem conferir.
+**Objetivo:** demonstrar no computador (Windows) a leitura atual, a curva histórica de 30/60 segundos, o alerta visual e o salvamento em CSV **recebendo UDP real do kit**, não apenas do simulador.
 
-## Topologia de rede testada em 07/11/2026
+## Montagem
 
-- Kit STM32 → **cabo RJ45 na porta LAN do roteador**.
-- PC Windows → Wi-Fi do mesmo roteador (não precisa de Ethernet no PC).
-- Micro-USB do kit → PC para acesso serial via Tera Term (115200, 8N1).
-- Kit: `10.0.1.101`; PC: `10.0.1.100`; UDP: `5005`.
+- Sensor SW-420 em **3V3** e GND. Com o kit desligado, fotografe a ligação do sinal e confira o pino; no teste validado da Entrega 3, a leitura correta foi `in_voltage13_raw` (canal **13**). Nunca alimente o sensor com 5 V.
+- Conecte kit STM32 por **RJ45 a uma porta LAN do roteador**; computador ao Wi-Fi da **mesma rede**; mantenha Micro-USB para o Tera Term (115200 8N1), e USB-C para alimentação.
+- No teste anterior, os IPs foram **kit 10.0.1.101** e **PC 10.0.1.100**, mas podem mudar. Descubra os endereços atuais: no PowerShell `ipconfig`; no Tera Term `ip addr show eth0`. Não reutilize IPs se tiverem mudado.
 
-Os IPs são apenas exemplos **registrados no ensaio**: use `ip addr show eth0`
-no kit e `ipconfig` no Windows para descobrir IPs atuais.
-
-## 1. Servidor UDP no Windows
-
-No PowerShell, dentro da pasta da Entrega 3:
+## 1. Testar a conectividade (PowerShell)
 
 ```powershell
-python -u servidor_udp.py --porta 5005 --log log_sensor.csv --max 80
+ping IP_DO_KIT
 ```
 
-Se o firewall bloquear pacotes de entrada, libere UDP/5005 para a rede local.
-Mantenha o processo aberto antes de iniciar o kit.
+Se o ping não responder, confira a LAN. Lembre que o ping pode ser bloqueado mesmo quando UDP funciona.
 
-## 2. Transferir executável ARM e script
-
-Na pasta onde estão os arquivos, substitua o endereço do kit se necessário:
+## 2. Iniciar a interface gráfica (PowerShell, pasta Entrega 4)
 
 ```powershell
-scp -O .\teste_sensor_arm root@10.0.1.101:/home/root/teste_sensor
-scp -O .\teste_no_kit.sh root@10.0.1.101:/home/root/teste_no_kit.sh
+python --version
+python interface_grafica.py --porta 5005 --log log_sensor.csv --relatorio relatorio_monitoramento.txt
 ```
 
-## 3. Teste no kit (Tera Term, login root)
+**Não use `--demo` na validação física** e não abra `servidor_udp.py` ao mesmo tempo na porta 5005, pois ambos recebem UDP e podem competir pelos datagramas. Verifique que a janela esteja aguardando o kit. A interface salva CSV automaticamente e cria arquivo com sufixo se o anterior já existir.
+
+Se o Firewall do Windows bloquear UDP, abra PowerShell **como administrador** e crie uma regra limitada à rede privada:
+
+```powershell
+New-NetFirewallRule -DisplayName "Sensor SW420 UDP 5005" -Direction Inbound -Protocol UDP -LocalPort 5005 -Profile Private -Action Allow
+```
+
+## 3. Executar o kit (Tera Term ou SSH)
+
+Se a Entrega 3 já deixou `/home/root/teste_sensor` e `teste_no_kit.sh`, **não transfira arquivos novamente**: use os mesmos executáveis comprovados. Caso precise transferir, no PC:
+
+```powershell
+scp -O teste_sensor_arm root@IP_DO_KIT:/home/root/teste_sensor
+scp -O teste_no_kit.sh root@IP_DO_KIT:/home/root/teste_no_kit.sh
+```
+
+No terminal do kit (preserve o log anterior antes que o script o sobrescreva):
 
 ```sh
-mkdir -p /home/root
 cd /home/root
+[ -f resultado_teste_kit.txt ] && cp resultado_teste_kit.txt resultado_teste_kit_backup_entrega3.txt
 chmod +x teste_sensor
-sh teste_no_kit.sh 10.0.1.100 13 5005
+sh teste_no_kit.sh IP_DO_PC 13 5005
 ```
 
-Deixe o SW-420 parado nas **30 primeiras leituras**. Após a contagem de 5 s,
-movimente-o durante as **50 leituras seguintes**. O resultado é gravado em
-`/home/root/resultado_teste_kit.txt`.
+O teste registra 30 amostras em repouso, espera 5 s e registra 50 com vibração. Mantenha o sensor parado na primeira fase; chacoalhe na segunda. Observe o valor na GUI, a curva, o banner vermelho, a contagem de 80 pacotes e o tempo desde a última atualização.
 
-## 4. Critérios de aceitação do ensaio
+## 4. Guardar evidências da Entrega 4
 
-- 30 + 50 linhas de leitura; o kit relata `Pacotes UDP enviados: 30` e `50` e zero falhas.
-- Servidor: `validos: 80 | invalidos: 0 | perdidos: 0 | fora de ordem: 0`.
-- CSV com 80 registros e sequência `1..30`, seguida de `1..50` (reinício esperado).
-- Alertas coerentes: repouso sem detecções e pelo menos um alerta durante a movimentação.
-- `python verificar_udp_entrega3.py` retorna aprovação do CSV.
+1. Capture **um print verdadeiro da interface em repouso** e **outro quando ocorrerem alertas reais** (Windows: `Win + Shift + S`). A interface tem botão de captura que depende opcionalmente da biblioteca Pillow.
+2. Feche a interface para gerar `relatorio_monitoramento.txt` (ou arquivo com sufixo) e confira os contadores de pacotes recebidos.
+3. Guarde `log_sensor.csv` (ou o nome com sufixo) e confira a sequência `1..30`, depois `1..50`, e 80 amostras totais. A perda registrada deve ser zero se nenhuma sequência faltar. A reinicialização entre as fases é esperada.
+4. Recupere o log do kit `resultado_teste_kit.txt` via `scp root@IP_DO_KIT:/home/root/resultado_teste_kit.txt .` e compare os valores/alertas com o CSV da GUI.
+5. Rode `python verificar_gui_entrega4.py log_sensor.csv --ip-kit IP_DO_KIT` no PC (ajuste o nome do CSV, se tiver sufixo).
+6. Envie um **commit final** com README atualizado, dados verdadeiros, prints da execução real e fontes na pasta `src`. Só então copie o link do commit para o Google Classroom.
 
-**Resultado efetivo de 07/11/2026:** 0/30 alertas em repouso; 15/50 durante
-vibração; 80/80 datagramas recebidos no PC sem perdas/erros.
-
-## Problemas comuns
-
-- **Ping sem resposta, UDP recebendo:** foi observado no ensaio; ICMP não é pré-requisito para UDP.
-- **UDP não chega:** confira IP do PC, Wi-Fi na mesma rede, porta 5005 e firewall.
-- **Arquivo não executa:** confira transferência, permissões (`chmod +x`) e arquitetura ARM.
-- **Sem alertas:** confirme canal IIO e ligação física; não mude fios com a placa energizada.
-- **Data 2000 no kit:** relógio não sincronizado; não usar timestamp da placa como hora civil.
-
-Ao publicar, anexe os logs do kit e do servidor, o CSV, o README e a foto da montagem (quando disponível).
+**Separação essencial:** `evidencia_interface_*_SIMULACAO.png`, `log_gui_simulacao.csv` e `relatorio_gui_simulacao.txt` demonstram apenas o simulador. Não apresente esses arquivos como prova de recepção do kit físico.
